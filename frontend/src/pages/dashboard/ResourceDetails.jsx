@@ -316,11 +316,19 @@ export default function ResourceDetails() {
               <div className="p-4 bg-indigo-500/5 border border-indigo-500/10 rounded-xl space-y-2">
                 <div className="text-xs text-indigo-400 uppercase font-semibold">Assigned Incident Details</div>
                 <div className="text-sm font-semibold text-white">{resource.assignedIncident.title}</div>
-                <div className="flex items-center space-x-2 pt-1">
-                  <span className="text-[10px] text-slate-400 uppercase">Incident Status:</span>
-                  <span className="px-2 py-0.5 text-[10px] font-bold rounded bg-slate-900 border border-slate-800 capitalize text-slate-300">
-                    {resource.assignedIncident.status}
-                  </span>
+                <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                  <div className="flex items-center space-x-1">
+                    <span className="text-[10px] text-slate-450 uppercase">Status:</span>
+                    <span className="px-2 py-0.5 text-[10px] font-bold rounded bg-slate-900 border border-slate-800 capitalize text-slate-300">
+                      {resource.assignedIncident.status}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <span className="text-[10px] text-slate-455 uppercase">Severity:</span>
+                    <span className="px-2 py-0.5 text-[10px] font-bold rounded bg-slate-900 border border-slate-800 capitalize text-slate-300 font-mono">
+                      {resource.assignedIncident.severity || 'medium'}
+                    </span>
+                  </div>
                 </div>
                 <div className="pt-2">
                   <Link

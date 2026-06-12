@@ -1,5 +1,6 @@
 const Incident = require('../models/Incident');
 const User = require('../models/User');
+const Resource = require('../models/Resource');
 const AppError = require('../utils/AppError');
 const ApiResponse = require('../utils/apiResponse');
 const asyncHandler = require('../utils/asyncHandler');
@@ -126,7 +127,8 @@ const getIncidents = asyncHandler(async (req, res, next) => {
     .skip(skip)
     .limit(limitNum)
     .populate('reportedBy', 'name email')
-    .populate('assignedResponder', 'name email');
+    .populate('assignedResponder', 'name email')
+    .populate('assignedResources', 'name type status capacity currentLocation.address');
 
   const totalIncidents = await Incident.countDocuments(query);
 
@@ -149,7 +151,8 @@ const getIncidents = asyncHandler(async (req, res, next) => {
 const getIncidentById = asyncHandler(async (req, res, next) => {
   const incident = await Incident.findById(req.params.id)
     .populate('reportedBy', 'name email')
-    .populate('assignedResponder', 'name email');
+    .populate('assignedResponder', 'name email')
+    .populate('assignedResources', 'name type status capacity currentLocation.address');
 
   if (!incident) {
     return next(new AppError(404, 'Incident not found.'));
@@ -210,11 +213,37 @@ const updateIncident = asyncHandler(async (req, res, next) => {
 
   incident = await incident.populate('reportedBy', 'name email');
   incident = await incident.populate('assignedResponder', 'name email');
+  incident = await incident.populate('assignedResources', 'name type status capacity currentLocation.address');
 
   res.status(200).json(
     new ApiResponse(200, { incident }, 'Incident updated successfully')
   );
 });
+
+// Helper function to release all resources for an incident
+const releaseAllResourcesForIncident = async (incident, userId) => {
+  const resources = await Resource.find({ assignedIncident: incident._id });
+  if (resources.length === 0) {
+    return false;
+  }
+
+  const releasedNames = [];
+  for (const resource of resources) {
+    resource.assignedIncident = undefined;
+    resource.status = 'available';
+    await resource.save();
+    releasedNames.push(resource.name);
+  }
+
+  incident.assignedResources = [];
+  incident.statusHistory.push({
+    status: incident.status,
+    changedBy: userId,
+    note: `Automatic resource release: ${releasedNames.join(', ')}`
+  });
+
+  return true;
+};
 
 // @desc    Update incident status
 // @route   PATCH /api/incidents/:id/status
@@ -254,10 +283,17 @@ const updateIncidentStatus = asyncHandler(async (req, res, next) => {
 
   // Apply new status
   incident.status = status;
+
+  // Auto release resources if status is resolved or closed
+  if (['resolved', 'closed'].includes(status)) {
+    await releaseAllResourcesForIncident(incident, req.user._id);
+  }
+
   await incident.save();
 
   incident = await incident.populate('reportedBy', 'name email');
   incident = await incident.populate('assignedResponder', 'name email');
+  incident = await incident.populate('assignedResources', 'name type status capacity currentLocation.address');
 
   // Create status update alerts
   try {
@@ -344,6 +380,7 @@ const assignResponder = asyncHandler(async (req, res, next) => {
 
   incident = await incident.populate('reportedBy', 'name email');
   incident = await incident.populate('assignedResponder', 'name email');
+  incident = await incident.populate('assignedResources', 'name type status capacity currentLocation.address');
 
   // Create alert for responder
   try {
@@ -384,6 +421,165 @@ const deleteIncident = asyncHandler(async (req, res, next) => {
   );
 });
 
+// @desc    Assign resource to incident
+// @route   PATCH /api/incidents/:id/resources/assign
+// @access  Private (Admin only)
+const assignResourceToIncident = asyncHandler(async (req, res, next) => {
+  const { resourceId } = req.body;
+
+  if (!resourceId) {
+    return next(new AppError(400, 'Please provide the resourceId.'));
+  }
+
+  let incident = await Incident.findById(req.params.id);
+  if (!incident) {
+    return next(new AppError(404, 'Incident not found.'));
+  }
+
+  const resource = await Resource.findById(resourceId);
+  if (!resource) {
+    return next(new AppError(404, 'Resource not found.'));
+  }
+
+  if (resource.status !== 'available') {
+    return next(new AppError(400, `Resource status is '${resource.status}' but must be 'available' to assign.`));
+  }
+
+  if (resource.assignedIncident) {
+    return next(new AppError(400, 'Resource is already assigned to an active incident.'));
+  }
+
+  if (!incident.assignedResources) {
+    incident.assignedResources = [];
+  }
+
+  const isAlreadyAssigned = incident.assignedResources.some(
+    (id) => id.toString() === resource._id.toString()
+  );
+
+  if (!isAlreadyAssigned) {
+    incident.assignedResources.push(resource._id);
+  }
+
+  resource.assignedIncident = incident._id;
+  resource.status = 'assigned';
+  await resource.save();
+
+  incident.statusHistory.push({
+    status: incident.status,
+    changedBy: req.user._id,
+    note: `Resource assigned: ${resource.name}`
+  });
+
+  await incident.save();
+
+  incident = await Incident.findById(incident._id)
+    .populate('reportedBy', 'name email')
+    .populate('assignedResponder', 'name email')
+    .populate('assignedResources', 'name type status capacity currentLocation.address');
+
+  try {
+    const io = req.app.get('io');
+    const targetUsers = [];
+    if (incident.assignedResponder) {
+      targetUsers.push(incident.assignedResponder._id || incident.assignedResponder);
+    }
+
+    await createAlertAndEmit({
+      io,
+      title: 'Resource Assigned',
+      message: `Resource "${resource.name}" has been assigned to incident "${incident.title}".`,
+      type: 'resource_updated',
+      priority: incident.severity || 'medium',
+      targetRoles: ['admin'],
+      targetUsers,
+      relatedIncident: incident._id,
+      relatedResource: resource._id,
+      createdBy: req.user._id
+    });
+  } catch (alertErr) {
+    console.error('Failed to create/emit alert for resource assignment:', alertErr.message);
+  }
+
+  res.status(200).json(
+    new ApiResponse(200, { incident }, 'Resource assigned to incident successfully')
+  );
+});
+
+// @desc    Release resource from incident
+// @route   PATCH /api/incidents/:id/resources/:resourceId/release
+// @access  Private (Admin only)
+const releaseResourceFromIncident = asyncHandler(async (req, res, next) => {
+  const { resourceId } = req.params;
+
+  let incident = await Incident.findById(req.params.id);
+  if (!incident) {
+    return next(new AppError(404, 'Incident not found.'));
+  }
+
+  const resource = await Resource.findById(resourceId);
+  if (!resource) {
+    return next(new AppError(404, 'Resource not found.'));
+  }
+
+  const isAssigned = incident.assignedResources && incident.assignedResources.some(
+    (id) => id.toString() === resource._id.toString()
+  );
+  if (!isAssigned && (!resource.assignedIncident || resource.assignedIncident.toString() !== incident._id.toString())) {
+    return next(new AppError(400, 'Resource is not assigned to this incident.'));
+  }
+
+  if (incident.assignedResources) {
+    incident.assignedResources = incident.assignedResources.filter(
+      (id) => id.toString() !== resource._id.toString()
+    );
+  }
+
+  resource.assignedIncident = undefined;
+  resource.status = 'available';
+  await resource.save();
+
+  incident.statusHistory.push({
+    status: incident.status,
+    changedBy: req.user._id,
+    note: `Resource released: ${resource.name}`
+  });
+
+  await incident.save();
+
+  incident = await Incident.findById(incident._id)
+    .populate('reportedBy', 'name email')
+    .populate('assignedResponder', 'name email')
+    .populate('assignedResources', 'name type status capacity currentLocation.address');
+
+  try {
+    const io = req.app.get('io');
+    const targetUsers = [];
+    if (incident.assignedResponder) {
+      targetUsers.push(incident.assignedResponder._id || incident.assignedResponder);
+    }
+
+    await createAlertAndEmit({
+      io,
+      title: 'Resource Released',
+      message: `Resource "${resource.name}" has been released from incident "${incident.title}".`,
+      type: 'resource_updated',
+      priority: incident.severity || 'medium',
+      targetRoles: ['admin'],
+      targetUsers,
+      relatedIncident: incident._id,
+      relatedResource: resource._id,
+      createdBy: req.user._id
+    });
+  } catch (alertErr) {
+    console.error('Failed to create/emit alert for resource release:', alertErr.message);
+  }
+
+  res.status(200).json(
+    new ApiResponse(200, { incident }, 'Resource released from incident successfully')
+  );
+});
+
 module.exports = {
   createIncident,
   getIncidents,
@@ -391,5 +587,8 @@ module.exports = {
   updateIncident,
   updateIncidentStatus,
   assignResponder,
-  deleteIncident
+  deleteIncident,
+  assignResourceToIncident,
+  releaseResourceFromIncident,
+  releaseAllResourcesForIncident
 };

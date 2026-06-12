@@ -9,15 +9,19 @@ import {
   UserCheck, 
   Activity, 
   Trash2, 
-  CheckCircle2 
+  CheckCircle2,
+  Wrench
 } from 'lucide-react';
 import { 
   getIncidentById, 
   updateIncidentStatus, 
   assignResponder, 
-  deleteIncident 
+  deleteIncident,
+  assignResourceToIncident,
+  releaseResourceFromIncident
 } from '../../api/incidentApi';
 import { getResponders } from '../../api/userApi';
+import { getResources } from '../../api/resourceApi';
 import useAuth from '../../hooks/useAuth';
 
 export default function IncidentDetails() {
@@ -43,6 +47,12 @@ export default function IncidentDetails() {
 
   // Deletion state
   const [deleteSubmitting, setDeleteSubmitting] = useState(false);
+
+  // Resource Assignment states
+  const [availableResources, setAvailableResources] = useState([]);
+  const [selectedResource, setSelectedResource] = useState('');
+  const [resourceSubmitting, setResourceSubmitting] = useState(false);
+  const [resourceError, setResourceError] = useState(null);
 
   const fetchDetails = async () => {
     setLoading(true);
@@ -77,9 +87,23 @@ export default function IncidentDetails() {
     }
   };
 
+  const fetchAvailableResources = async () => {
+    if (user && user.role === 'admin') {
+      try {
+        const res = await getResources({ status: 'available', limit: 100 });
+        if (res.success) {
+          setAvailableResources(res.data.resources);
+        }
+      } catch (err) {
+        console.error('Failed to load available resources:', err);
+      }
+    }
+  };
+
   useEffect(() => {
     fetchDetails();
     fetchRespondersList();
+    fetchAvailableResources();
   }, [id, user]);
 
   const handleStatusSubmit = async (e) => {
@@ -125,6 +149,50 @@ export default function IncidentDetails() {
       setAssignError(err.response?.data?.message || 'Error assigning responder.');
     } finally {
       setAssignSubmitting(false);
+    }
+  };
+
+  const handleAssignResource = async (e) => {
+    e.preventDefault();
+    if (!selectedResource) return;
+    setResourceSubmitting(true);
+    setResourceError(null);
+    try {
+      const res = await assignResourceToIncident(id, selectedResource);
+      if (res.success) {
+        setIncident(res.data.incident);
+        setSelectedResource('');
+        fetchAvailableResources();
+      } else {
+        setResourceError(res.message || 'Failed to assign resource.');
+      }
+    } catch (err) {
+      console.error(err);
+      setResourceError(err.response?.data?.message || 'Error assigning resource.');
+    } finally {
+      setResourceSubmitting(false);
+    }
+  };
+
+  const handleReleaseResource = async (resourceId) => {
+    if (!window.confirm('Are you sure you want to release this resource from the incident?')) {
+      return;
+    }
+    setResourceSubmitting(true);
+    setResourceError(null);
+    try {
+      const res = await releaseResourceFromIncident(id, resourceId);
+      if (res.success) {
+        setIncident(res.data.incident);
+        fetchAvailableResources();
+      } else {
+        setResourceError(res.message || 'Failed to release resource.');
+      }
+    } catch (err) {
+      console.error(err);
+      setResourceError(err.response?.data?.message || 'Error releasing resource.');
+    } finally {
+      setResourceSubmitting(false);
     }
   };
 
@@ -351,6 +419,98 @@ export default function IncidentDetails() {
               </div>
 
             </div>
+          </div>
+
+          {/* Card: Assigned Resources */}
+          <div className="bg-slate-950/40 border border-slate-800 rounded-2xl p-6 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                <Wrench className="h-4 w-4 text-indigo-400" />
+                <span>Assigned Resources</span>
+              </h2>
+              {isUserAdmin && (
+                <form onSubmit={handleAssignResource} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <select
+                    value={selectedResource}
+                    onChange={(e) => setSelectedResource(e.target.value)}
+                    required
+                    className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-indigo-500 min-w-[180px]"
+                  >
+                    <option value="">Select Resource...</option>
+                    {availableResources.map(r => (
+                      <option key={r._id} value={r._id}>
+                        {r.name} ({r.type.replace('_', ' ')})
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="submit"
+                    disabled={resourceSubmitting || !selectedResource}
+                    className="px-3 py-1.5 text-xs font-semibold text-white bg-indigo-650 hover:bg-indigo-550 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg shadow transition"
+                  >
+                    Assign
+                  </button>
+                </form>
+              )}
+            </div>
+
+            {resourceError && (
+              <div className="text-xs text-red-400 bg-red-500/10 p-2 rounded border border-red-500/10">
+                {resourceError}
+              </div>
+            )}
+
+            {incident.assignedResources && incident.assignedResources.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {incident.assignedResources.map((resrc) => (
+                  <div key={resrc._id} className="p-4 bg-slate-900/30 border border-slate-900 rounded-xl flex flex-col justify-between gap-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <Link
+                          to={`/dashboard/resources/${resrc._id}`}
+                          className="font-semibold text-indigo-400 hover:underline text-sm"
+                        >
+                          {resrc.name}
+                        </Link>
+                        <span className="px-2 py-0.5 text-[10px] font-semibold rounded bg-slate-950 text-slate-400 border border-slate-800 capitalize">
+                          {resrc.type.replace('_', ' ')}
+                        </span>
+                      </div>
+                      <div className="text-xs text-slate-400">
+                        <span className="text-slate-500">Status:</span>{' '}
+                        <span className="capitalize text-slate-300">{resrc.status}</span>
+                      </div>
+                      <div className="text-xs text-slate-400">
+                        <span className="text-slate-500">Capacity:</span>{' '}
+                        <span className="text-slate-300">{resrc.capacity}</span>
+                      </div>
+                      <div className="text-xs text-slate-400 truncate">
+                        <span className="text-slate-500">Address:</span>{' '}
+                        <span className="text-slate-300" title={resrc.currentLocation?.address}>
+                          {resrc.currentLocation?.address || 'N/A'}
+                        </span>
+                      </div>
+                    </div>
+
+                    {isUserAdmin && (
+                      <div className="pt-2 border-t border-slate-900/60 flex justify-end">
+                        <button
+                          type="button"
+                          onClick={() => handleReleaseResource(resrc._id)}
+                          className="px-2 py-1 text-[10px] font-semibold text-rose-400 hover:text-rose-300 bg-rose-500/5 hover:bg-rose-500/10 border border-rose-500/15 rounded transition"
+                        >
+                          Release Resource
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-xs text-slate-500 italic py-2">
+                No emergency resources have been assigned to this incident.
+              </div>
+            )}
           </div>
 
         </div>

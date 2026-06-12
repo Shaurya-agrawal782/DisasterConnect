@@ -90,7 +90,7 @@ const getResources = asyncHandler(async (req, res, next) => {
     .limit(limitNum)
     .populate('createdBy', 'name email')
     .populate('updatedBy', 'name email')
-    .populate('assignedIncident', 'title status');
+    .populate('assignedIncident', 'title type severity status location.address');
 
   const totalResources = await Resource.countDocuments(query);
 
@@ -114,7 +114,7 @@ const getResourceById = asyncHandler(async (req, res, next) => {
   const resource = await Resource.findById(req.params.id)
     .populate('createdBy', 'name email')
     .populate('updatedBy', 'name email')
-    .populate('assignedIncident', 'title status');
+    .populate('assignedIncident', 'title type severity status location.address');
 
   if (!resource) {
     return next(new AppError(404, 'Resource not found.'));
@@ -177,7 +177,7 @@ const updateResource = asyncHandler(async (req, res, next) => {
 
   resource = await resource.populate('createdBy', 'name email');
   resource = await resource.populate('updatedBy', 'name email');
-  resource = await resource.populate('assignedIncident', 'title status');
+  resource = await resource.populate('assignedIncident', 'title type severity status location.address');
 
   res.status(200).json(
     new ApiResponse(200, { resource }, 'Resource updated successfully')
@@ -212,7 +212,7 @@ const updateResourceStatus = asyncHandler(async (req, res, next) => {
 
   resource = await resource.populate('createdBy', 'name email');
   resource = await resource.populate('updatedBy', 'name email');
-  resource = await resource.populate('assignedIncident', 'title status');
+  resource = await resource.populate('assignedIncident', 'title type severity status location.address');
 
   res.status(200).json(
     new ApiResponse(200, { resource }, 'Resource status updated successfully')

@@ -34,3 +34,13 @@ export const deleteIncident = async (id) => {
   const response = await client.delete(`/incidents/${id}`);
   return response.data;
 };
+
+export const assignResourceToIncident = async (id, resourceId) => {
+  const response = await client.patch(`/incidents/${id}/resources/assign`, { resourceId });
+  return response.data;
+};
+
+export const releaseResourceFromIncident = async (id, resourceId) => {
+  const response = await client.patch(`/incidents/${id}/resources/${resourceId}/release`);
+  return response.data;
+};

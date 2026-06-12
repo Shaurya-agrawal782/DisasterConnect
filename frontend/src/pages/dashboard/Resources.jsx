@@ -267,6 +267,11 @@ export default function Resources() {
                       <td className="p-4">
                         <div className="font-semibold text-white text-sm">{resource.name}</div>
                         <div className="text-xs text-slate-500 truncate max-w-xs mt-0.5">{resource.description || 'No description provided'}</div>
+                        {resource.assignedIncident && (
+                          <div className="text-[10px] text-indigo-450 mt-1 font-medium truncate max-w-xs">
+                            Assigned: {resource.assignedIncident.title} ({resource.assignedIncident.status})
+                          </div>
+                        )}
                       </td>
                       <td className="p-4">{getTypeBadge(resource.type)}</td>
                       <td className="p-4">{getStatusBadge(resource.status)}</td>

@@ -6,7 +6,9 @@ const {
   updateIncident,
   updateIncidentStatus,
   assignResponder,
-  deleteIncident
+  deleteIncident,
+  assignResourceToIncident,
+  releaseResourceFromIncident
 } = require('../controllers/incidentController');
 const { protect } = require('../middleware/authMiddleware');
 const { authorizeRoles } = require('../middleware/roleMiddleware');
@@ -22,6 +24,8 @@ router.get('/:id', protect, getIncidentById);
 router.patch('/:id', protect, authorizeRoles('admin'), updateIncident);
 router.delete('/:id', protect, authorizeRoles('admin'), deleteIncident);
 router.patch('/:id/assign', protect, authorizeRoles('admin'), assignResponder);
+router.patch('/:id/resources/assign', protect, authorizeRoles('admin'), assignResourceToIncident);
+router.patch('/:id/resources/:resourceId/release', protect, authorizeRoles('admin'), releaseResourceFromIncident);
 
 // Status updates (both admin and responder have path controls in the controller)
 router.patch('/:id/status', protect, authorizeRoles('admin', 'responder'), updateIncidentStatus);

@@ -47,9 +47,11 @@
 - **Repository cleanup completed: Legacy Python prototype removed from final repository to keep the hackathon submission focused on the MERN platform.**
 - **Visual Wow Pass 1 completed: controlled Motion/GSAP polish, command visuals, premium micro-interactions, and Spline-ready visual slot added without changing core workflows.**
 - **Landing page redesigned with fixed cinematic command-center video background and readable dark product sections.**
+- **Deployment auth fix completed: frontend API clients now consistently send credentials for HttpOnly cookie-based protected requests. Added session retry-with-backoff in AuthContext to survive Render free-tier cold starts, and improved 401 error messaging in Dashboard.**
 
 ## Next Steps
-- Deploy to Render (backend) and Vercel (frontend) with MongoDB Atlas.
+- Seed demo data on production MongoDB Atlas (`npm run seed:users && npm run seed:demo`).
+- Verify deployed login → dashboard flow end-to-end after Render cold start.
 
 
 

@@ -3,6 +3,9 @@ import { getCurrentUser, loginUser, registerUser, logoutUser } from '../api/auth
 
 export const AuthContext = createContext();
 
+// Helper: pause execution for `ms` milliseconds
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,9 +27,62 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Run initialization check on load
+  /**
+   * On initial mount, attempt to restore session with retries.
+   * This handles Render free-tier cold starts where the backend
+   * may take 20-30s to wake up. Without retries, the first
+   * /auth/me call fails and the user is silently logged out
+   * even though their HttpOnly cookie is still valid.
+   */
+  const initSessionWithRetry = async (maxAttempts = 3, delayMs = 2000) => {
+    setLoading(true);
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        const res = await getCurrentUser();
+        if (res && res.data && res.data.user) {
+          setUser(res.data.user);
+          setLoading(false);
+          return;
+        }
+        // API responded but no user — not a cold-start issue, stop retrying
+        setUser(null);
+        setLoading(false);
+        return;
+      } catch (error) {
+        const isNetworkError = !error.response;
+        const is401 = error.response?.status === 401;
+
+        // 401 = cookie missing/invalid — don't retry, user is genuinely not logged in
+        if (is401) {
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
+        // Network error on last attempt — give up
+        if (isNetworkError && attempt === maxAttempts) {
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
+        // Network error — backend may be cold-starting, wait and retry
+        if (isNetworkError && attempt < maxAttempts) {
+          await sleep(delayMs);
+        } else {
+          // Any other error — stop immediately
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+      }
+    }
+    setLoading(false);
+  };
+
+  // Run initialization check on load — retries on network errors to handle Render cold starts
   useEffect(() => {
-    refreshUser();
+    initSessionWithRetry();
   }, []);
 
   const login = async (email, password) => {

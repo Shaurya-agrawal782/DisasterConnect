@@ -27,7 +27,11 @@ export default function Dashboard() {
       }
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || 'An error occurred while fetching dashboard data.');
+      if (err.response?.status === 401) {
+        setError('Session expired or cookie not available. Please sign in again.');
+      } else {
+        setError(err.response?.data?.message || 'An error occurred while fetching dashboard data.');
+      }
     } finally {
       setLoading(false);
     }

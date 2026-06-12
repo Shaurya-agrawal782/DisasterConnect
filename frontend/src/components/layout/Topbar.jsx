@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LogOut, User, Activity, Bell } from 'lucide-react';
 import useAuth from '../../hooks/useAuth';
 import useSocket from '../../hooks/useSocket';
 
-export default function Topbar() {
+export default function Topbar({ onMenuClick }) {
   const { user, logout } = useAuth();
   const { connected, liveAlerts } = useSocket();
 
@@ -12,73 +11,73 @@ export default function Topbar() {
 
   // Role tag styling mapping
   const roleBadges = {
-    admin: 'bg-red-500/10 text-red-400 border-red-500/20',
-    responder: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-    citizen: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+    admin: 'bg-error-container/20 text-error border-error/20',
+    responder: 'bg-primary-container/20 text-primary border-primary-container/20',
+    citizen: 'bg-emerald-100 text-emerald-800 border-emerald-250'
   };
 
-  const badgeClass = roleBadges[user.role] || 'bg-slate-500/10 text-slate-400 border-slate-500/20';
+  const badgeClass = roleBadges[user.role] || 'bg-surface-container-high text-on-surface-variant border-outline-variant';
 
   return (
-    <header className="h-16 border-b border-slate-800 bg-slate-950/20 backdrop-blur-md px-6 flex items-center justify-between z-10">
-      {/* Active Sync Status */}
-      <div className="flex items-center space-x-2.5">
-        <div className="relative flex items-center justify-center w-2.5 h-2.5">
-          <span className={`absolute inline-flex h-full w-full rounded-full opacity-75 animate-pulse ${connected ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
-          <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${connected ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
-        </div>
-        <span className="text-xs font-semibold tracking-wide text-slate-400 uppercase">
-          {connected ? 'Real-time Linked' : 'Off-line Sync'}
-        </span>
+    <header className="bg-surface border-b border-outline-variant fixed top-0 w-full md:w-[calc(100%-280px)] z-50 flex justify-between items-center px-6 md:px-margin-desktop h-16">
+      <div className="flex items-center space-x-3">
+        {/* Hamburger menu button for mobile */}
+        <button
+          onClick={onMenuClick}
+          className="md:hidden p-1.5 text-on-surface hover:bg-surface-container rounded-lg transition-colors flex items-center justify-center border border-outline-variant"
+          title="Open Menu"
+        >
+          <span className="material-symbols-outlined text-[20px]">menu</span>
+        </button>
+        <h1 className="font-headline-md text-headline-md font-bold text-primary">DisasterConnect</h1>
       </div>
 
-      {/* User Actions */}
-      <div className="flex items-center space-x-4">
-        {/* Alerts Notification Bell Link */}
+      <div className="flex items-center space-x-2">
+        {/* Sync Status Badge */}
+        <div className="hidden sm:flex items-center space-x-2 px-3 py-1.5 bg-surface-container-low rounded border border-outline-variant">
+          <span className={`w-2 h-2 rounded-full ${connected ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`}></span>
+          <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+            {connected ? 'Real-time Linked' : 'Off-line Sync'}
+          </span>
+        </div>
+
+        <div className="h-6 w-px bg-outline-variant mx-2 hidden sm:block"></div>
+
+        {/* Trailing Icon Actions */}
         <Link
           to="/dashboard/alerts"
-          className="relative p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition-all"
+          className="p-2 text-on-surface-variant hover:bg-surface-container-high rounded transition-colors relative"
           title="Notification Center"
         >
-          <Bell className="h-4.5 w-4.5" />
+          <span className="material-symbols-outlined">notifications</span>
           {liveAlerts.length > 0 && (
-            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-indigo-600 text-[8.5px] font-black text-white shadow shadow-indigo-650/30">
-              {liveAlerts.length}
-            </span>
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
           )}
         </Link>
 
-        <div className="h-6 w-px bg-slate-800"></div>
-        {/* User Card */}
-        <div className="flex items-center space-x-3">
-          <div className="p-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700/50">
-            <User className="h-4 w-4" />
-          </div>
-          <div className="text-left hidden sm:block">
-            <span className="block text-sm font-semibold text-white leading-none mb-1">
+        {/* User Badge / Role Profile */}
+        <div className="flex items-center space-x-3 ml-2">
+          <div className="hidden sm:flex flex-col text-right">
+            <span className="block text-sm font-semibold text-on-surface leading-none mb-1">
               {user.name}
             </span>
-            <span className="block text-xs text-slate-400 leading-none">
+            <span className="block text-xs text-on-surface-variant leading-none">
               {user.email}
             </span>
           </div>
-          {/* Role badge */}
           <span className={`px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded border ${badgeClass}`}>
             {user.role}
           </span>
         </div>
 
-        <div className="h-6 w-px bg-slate-800"></div>
-
-        {/* Logout */}
-        <button
-          onClick={logout}
-          className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-500/5 rounded-lg border border-transparent hover:border-red-500/10 transition-all duration-150"
-          title="Sign Out"
+        {/* Report Incident Quick Link */}
+        <Link
+          to="/dashboard/incidents/new"
+          className="hidden sm:flex items-center space-x-1 bg-error hover:bg-error-container text-on-error hover:text-on-error-container py-1.5 px-4 rounded font-label-md text-label-md transition-colors border border-transparent hover:border-error ml-3"
         >
-          <LogOut className="h-4 w-4" />
-          <span className="hidden md:inline">Sign Out</span>
-        </button>
+          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>report</span>
+          <span>Report Incident</span>
+        </Link>
       </div>
     </header>
   );

@@ -22,10 +22,10 @@ export default function StatusBarChart({ data = {}, title }) {
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-slate-900 border border-slate-800 rounded-lg p-2.5 shadow-xl text-xs">
-          <p className="font-semibold text-slate-300">{payload[0].payload.name}</p>
-          <p className="text-indigo-400 font-bold mt-0.5">
-            Count: <span className="text-white">{payload[0].value}</span>
+        <div className="bg-surface border border-outline-variant rounded-lg p-2.5 shadow-sm text-xs">
+          <p className="font-semibold text-on-surface">{payload[0].payload.name}</p>
+          <p className="text-primary font-bold mt-0.5">
+            Count: <span className="text-on-surface">{payload[0].value}</span>
           </p>
         </div>
       );
@@ -36,25 +36,25 @@ export default function StatusBarChart({ data = {}, title }) {
   // Color mapping based on status
   const getColor = (key) => {
     const colors = {
-      reported: '#38bdf8', // sky-400
-      verified: '#6366f1', // indigo-500
+      reported: '#0284c7', // sky-600
+      verified: '#0037b0', // primary
       assigned: '#8b5cf6', // violet-500
       'in-progress': '#f59e0b', // amber-500
       resolved: '#10b981', // emerald-500
-      closed: '#64748b', // slate-500
+      closed: '#747686', // outline
       // Resource statuses
       available: '#10b981',
-      busy: '#ef4444',
+      busy: '#ba1a1a', // error
       maintenance: '#f59e0b',
-      offline: '#64748b',
+      offline: '#747686',
     };
-    return colors[key] || '#6366f1';
+    return colors[key] || '#0037b0';
   };
 
   return (
-    <div className="bg-slate-950/40 border border-slate-800 rounded-2xl p-6 flex flex-col h-[300px] hover:border-slate-850 transition duration-300">
+    <div className="bg-surface border border-outline-variant rounded-xl p-6 flex flex-col h-[300px] hover:border-outline transition duration-300">
       {title && (
-        <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">
+        <h4 className="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-4 text-left">
           {title}
         </h4>
       )}
@@ -64,22 +64,22 @@ export default function StatusBarChart({ data = {}, title }) {
             data={chartData}
             margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e1ed" vertical={false} />
             <XAxis 
               dataKey="name" 
-              stroke="#64748b" 
+              stroke="#747686" 
               fontSize={10} 
               tickLine={false} 
               axisLine={false}
             />
             <YAxis 
-              stroke="#64748b" 
+              stroke="#747686" 
               fontSize={10} 
               tickLine={false} 
               axisLine={false} 
               allowDecimals={false}
             />
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(30, 41, 59, 0.4)' }} />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(237, 237, 249, 0.4)' }} />
             <Bar dataKey="count" radius={[4, 4, 0, 0]}>
               {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={getColor(entry.rawKey)} />

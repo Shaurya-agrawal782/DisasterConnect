@@ -48,10 +48,10 @@ export default function TypePieChart({ data = {}, title }) {
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-slate-900 border border-slate-800 rounded-lg p-2.5 shadow-xl text-xs">
-          <p className="font-semibold text-slate-300">{payload[0].name}</p>
-          <p className="text-indigo-400 font-bold mt-0.5">
-            Count: <span className="text-white">{payload[0].value}</span>
+        <div className="bg-surface border border-outline-variant rounded-lg p-2.5 shadow-sm text-xs">
+          <p className="font-semibold text-on-surface">{payload[0].name}</p>
+          <p className="text-primary font-bold mt-0.5">
+            Count: <span className="text-on-surface">{payload[0].value}</span>
           </p>
         </div>
       );
@@ -60,15 +60,15 @@ export default function TypePieChart({ data = {}, title }) {
   };
 
   return (
-    <div className="bg-slate-950/40 border border-slate-800 rounded-2xl p-6 flex flex-col h-[300px] hover:border-slate-850 transition duration-300">
+    <div className="bg-surface border border-outline-variant rounded-xl p-6 flex flex-col h-[300px] hover:border-outline transition duration-300">
       {title && (
-        <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">
+        <h4 className="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-4 text-left">
           {title}
         </h4>
       )}
       <div className="flex-1 w-full min-h-0">
         {chartData.length === 0 ? (
-          <div className="h-full flex items-center justify-center text-slate-500 text-xs font-medium">
+          <div className="h-full flex items-center justify-center text-on-surface-variant/65 text-xs font-medium">
             No statistics available.
           </div>
         ) : (
@@ -87,7 +87,7 @@ export default function TypePieChart({ data = {}, title }) {
                   <Cell 
                     key={`cell-${index}`} 
                     fill={getSliceColor(entry.rawKey)} 
-                    stroke="#020617" 
+                    stroke="#ffffff" 
                     strokeWidth={2}
                   />
                 ))}
@@ -98,7 +98,7 @@ export default function TypePieChart({ data = {}, title }) {
                 height={36} 
                 iconSize={8}
                 iconType="circle"
-                wrapperStyle={{ fontSize: '10px', color: '#94a3b8' }}
+                wrapperStyle={{ fontSize: '10px', color: '#434655' }}
               />
             </PieChart>
           </ResponsiveContainer>

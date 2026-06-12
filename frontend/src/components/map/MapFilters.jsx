@@ -1,5 +1,4 @@
 import React from 'react';
-import { Eye, EyeOff, Filter, RefreshCw } from 'lucide-react';
 
 export default function MapFilters({ filters, setFilters, onReset, onRefresh }) {
   const updateFilter = (key, value) => {
@@ -7,25 +6,25 @@ export default function MapFilters({ filters, setFilters, onReset, onRefresh }) 
   };
 
   return (
-    <div className="bg-slate-950/40 border border-slate-800 rounded-2xl p-4 md:p-6 space-y-4 shadow-xl">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-900/60">
-        <div className="flex items-center space-x-2 text-sm font-semibold text-white">
-          <Filter className="h-4 w-4 text-indigo-400" />
+    <div className="bg-surface border border-outline-variant rounded-xl p-4 md:p-6 space-y-4 shadow-sm text-left">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-outline-variant/60">
+        <div className="flex items-center space-x-2 text-sm font-semibold text-on-surface">
+          <span className="material-symbols-outlined text-[18px] text-primary">filter_list</span>
           <span>Map Controls</span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {onRefresh && (
             <button
               onClick={onRefresh}
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-lg transition"
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-on-surface hover:bg-surface-container bg-surface border border-outline-variant rounded transition"
             >
-              <RefreshCw className="h-3 w-3" />
+              <span className="material-symbols-outlined text-[14px]">refresh</span>
               <span>Refresh</span>
             </button>
           )}
           <button
             onClick={onReset}
-            className="text-xs text-slate-400 hover:text-white transition"
+            className="text-xs text-primary font-bold hover:underline transition"
           >
             Clear Filters
           </button>
@@ -34,28 +33,36 @@ export default function MapFilters({ filters, setFilters, onReset, onRefresh }) 
 
       {/* Layer Toggles (Show/Hide entire sets) */}
       <div className="flex flex-wrap gap-4 text-sm font-medium">
-        <label className="flex items-center space-x-2.5 cursor-pointer text-slate-200 hover:text-white transition">
+        <label className="flex items-center space-x-2.5 cursor-pointer text-on-surface-variant hover:text-on-surface transition">
           <input
             type="checkbox"
             checked={filters.showIncidents}
             onChange={(e) => updateFilter('showIncidents', e.target.checked)}
-            className="rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-slate-950"
+            className="rounded border-outline-variant bg-surface text-primary focus:ring-primary focus:ring-offset-surface"
           />
           <span className="flex items-center space-x-1">
-            {filters.showIncidents ? <Eye className="h-3.5 w-3.5 text-indigo-400" /> : <EyeOff className="h-3.5 w-3.5 text-slate-500" />}
+            {filters.showIncidents ? (
+              <span className="material-symbols-outlined text-[16px] text-primary">visibility</span>
+            ) : (
+              <span className="material-symbols-outlined text-[16px] text-outline">visibility_off</span>
+            )}
             <span>Show Incidents</span>
           </span>
         </label>
 
-        <label className="flex items-center space-x-2.5 cursor-pointer text-slate-200 hover:text-white transition">
+        <label className="flex items-center space-x-2.5 cursor-pointer text-on-surface-variant hover:text-on-surface transition">
           <input
             type="checkbox"
             checked={filters.showResources}
             onChange={(e) => updateFilter('showResources', e.target.checked)}
-            className="rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-slate-950"
+            className="rounded border-outline-variant bg-surface text-primary focus:ring-primary focus:ring-offset-surface"
           />
           <span className="flex items-center space-x-1">
-            {filters.showResources ? <Eye className="h-3.5 w-3.5 text-indigo-400" /> : <EyeOff className="h-3.5 w-3.5 text-slate-500" />}
+            {filters.showResources ? (
+              <span className="material-symbols-outlined text-[16px] text-primary">visibility</span>
+            ) : (
+              <span className="material-symbols-outlined text-[16px] text-outline">visibility_off</span>
+            )}
             <span>Show Resources</span>
           </span>
         </label>
@@ -68,11 +75,11 @@ export default function MapFilters({ filters, setFilters, onReset, onRefresh }) 
         {filters.showIncidents && (
           <>
             <div>
-              <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Incident Severity</label>
+              <label className="block text-[10px] text-on-surface-variant font-bold uppercase tracking-wider mb-1">Incident Severity</label>
               <select
                 value={filters.incidentSeverity}
                 onChange={(e) => updateFilter('incidentSeverity', e.target.value)}
-                className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-surface border border-outline-variant rounded px-2.5 py-1.5 text-xs text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/15 transition-all"
               >
                 <option value="">All Severities</option>
                 <option value="low">Low</option>
@@ -84,11 +91,11 @@ export default function MapFilters({ filters, setFilters, onReset, onRefresh }) 
 
             {/* Incident Type */}
             <div>
-              <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Incident Type</label>
+              <label className="block text-[10px] text-on-surface-variant font-bold uppercase tracking-wider mb-1">Incident Type</label>
               <select
                 value={filters.incidentType}
                 onChange={(e) => updateFilter('incidentType', e.target.value)}
-                className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-surface border border-outline-variant rounded px-2.5 py-1.5 text-xs text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/15 transition-all"
               >
                 <option value="">All Incident Types</option>
                 <option value="fire">Fire</option>
@@ -103,11 +110,11 @@ export default function MapFilters({ filters, setFilters, onReset, onRefresh }) 
 
             {/* Incident Status */}
             <div>
-              <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Incident Status</label>
+              <label className="block text-[10px] text-on-surface-variant font-bold uppercase tracking-wider mb-1">Incident Status</label>
               <select
                 value={filters.incidentStatus}
                 onChange={(e) => updateFilter('incidentStatus', e.target.value)}
-                className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-surface border border-outline-variant rounded px-2.5 py-1.5 text-xs text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/15 transition-all"
               >
                 <option value="">All Incident Statuses</option>
                 <option value="reported">Reported</option>
@@ -125,11 +132,11 @@ export default function MapFilters({ filters, setFilters, onReset, onRefresh }) 
         {filters.showResources && (
           <>
             <div>
-              <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Resource Status</label>
+              <label className="block text-[10px] text-on-surface-variant font-bold uppercase tracking-wider mb-1">Resource Status</label>
               <select
                 value={filters.resourceStatus}
                 onChange={(e) => updateFilter('resourceStatus', e.target.value)}
-                className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-surface border border-outline-variant rounded px-2.5 py-1.5 text-xs text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/15 transition-all"
               >
                 <option value="">All Resource Statuses</option>
                 <option value="available">Available</option>
@@ -142,11 +149,11 @@ export default function MapFilters({ filters, setFilters, onReset, onRefresh }) 
 
             {/* Resource Type */}
             <div>
-              <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Resource Type</label>
+              <label className="block text-[10px] text-on-surface-variant font-bold uppercase tracking-wider mb-1">Resource Type</label>
               <select
                 value={filters.resourceType}
                 onChange={(e) => updateFilter('resourceType', e.target.value)}
-                className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-surface border border-outline-variant rounded px-2.5 py-1.5 text-xs text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/15 transition-all"
               >
                 <option value="">All Resource Types</option>
                 <option value="ambulance">Ambulance</option>

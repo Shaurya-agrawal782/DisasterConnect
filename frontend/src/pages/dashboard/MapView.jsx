@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import { Map as MapIcon, AlertOctagon, Wrench, RefreshCw, Layers } from 'lucide-react';
 import { getIncidents } from '../../api/incidentApi';
 import { getResources } from '../../api/resourceApi';
 import MapFilters from '../../components/map/MapFilters';
@@ -100,22 +99,22 @@ export default function MapView() {
       
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center space-x-3">
-          <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-400">
-            <Layers className="h-6 w-6" />
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+            <span className="material-symbols-outlined text-[24px]">map</span>
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">Interactive Map</h1>
-            <p className="text-sm text-slate-400">Geospatial overview of active incidents and emergency response dispatches</p>
+            <h1 className="font-headline-lg text-headline-lg font-bold text-on-background tracking-tight">Interactive Map</h1>
+            <p className="font-body-md text-body-md text-on-surface-variant">Geospatial overview of active incidents and emergency response dispatches</p>
           </div>
         </div>
 
         <button
           onClick={fetchData}
           disabled={loading}
-          className="inline-flex items-center justify-center space-x-2 px-4 py-2 text-sm font-semibold text-white bg-slate-900 hover:bg-slate-850 border border-slate-800 disabled:opacity-40 rounded-lg shadow-lg transition"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 font-label-md text-label-md font-bold text-on-surface bg-surface border border-outline-variant disabled:opacity-40 rounded-lg hover:bg-surface-container transition shadow-sm"
         >
-          <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+          <span className={`material-symbols-outlined ${loading ? 'animate-spin' : ''}`}>refresh</span>
           <span>Refresh Map</span>
         </button>
       </div>
@@ -124,46 +123,46 @@ export default function MapView() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Total incidents widget */}
-        <div className="bg-slate-950/40 border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
+        <div className="bg-surface border border-outline-variant rounded-xl p-4 flex items-center justify-between shadow-sm">
           <div className="space-y-1">
-            <span className="text-xs text-slate-500 font-medium uppercase tracking-wider block">Incidents Shown</span>
-            <span className="text-2xl font-extrabold text-white">{totalIncidentsCount}</span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Incidents Shown</span>
+            <span className="text-2xl font-extrabold text-on-surface">{totalIncidentsCount}</span>
           </div>
-          <div className="p-3 rounded-xl bg-rose-500/10 text-rose-400">
-            <AlertOctagon className="h-5 w-5" />
+          <div className="p-2 rounded-lg bg-error-container text-error flex items-center justify-center">
+            <span className="material-symbols-outlined text-[24px]">emergency</span>
           </div>
         </div>
 
         {/* Critical incidents widget */}
-        <div className="bg-slate-950/40 border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
+        <div className="bg-surface border border-outline-variant rounded-xl p-4 flex items-center justify-between shadow-sm">
           <div className="space-y-1">
-            <span className="text-xs text-slate-500 font-medium uppercase tracking-wider block">Critical Severity</span>
-            <span className="text-2xl font-extrabold text-rose-500">{criticalIncidentsCount}</span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Critical Severity</span>
+            <span className="text-2xl font-extrabold text-error">{criticalIncidentsCount}</span>
           </div>
-          <div className="p-3 rounded-xl bg-red-500/10 text-red-500 animate-pulse">
-            <AlertOctagon className="h-5 w-5" />
+          <div className="p-2 rounded-lg bg-error-container text-error animate-pulse flex items-center justify-center">
+            <span className="material-symbols-outlined text-[24px]">warning</span>
           </div>
         </div>
 
         {/* Total resources widget */}
-        <div className="bg-slate-950/40 border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
+        <div className="bg-surface border border-outline-variant rounded-xl p-4 flex items-center justify-between shadow-sm">
           <div className="space-y-1">
-            <span className="text-xs text-slate-500 font-medium uppercase tracking-wider block">Resources Shown</span>
-            <span className="text-2xl font-extrabold text-white">{totalResourcesCount}</span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Resources Shown</span>
+            <span className="text-2xl font-extrabold text-on-surface">{totalResourcesCount}</span>
           </div>
-          <div className="p-3 rounded-xl bg-indigo-500/10 text-indigo-400">
-            <Wrench className="h-5 w-5" />
+          <div className="p-2 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+            <span className="material-symbols-outlined text-[24px]">inventory_2</span>
           </div>
         </div>
 
         {/* Available resources widget */}
-        <div className="bg-slate-950/40 border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
+        <div className="bg-surface border border-outline-variant rounded-xl p-4 flex items-center justify-between shadow-sm">
           <div className="space-y-1">
-            <span className="text-xs text-slate-500 font-medium uppercase tracking-wider block">Available Assets</span>
-            <span className="text-2xl font-extrabold text-emerald-400">{availableResourcesCount}</span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Available Assets</span>
+            <span className="text-2xl font-extrabold text-emerald-600">{availableResourcesCount}</span>
           </div>
-          <div className="p-3 rounded-xl bg-emerald-500/10 text-emerald-400">
-            <Wrench className="h-5 w-5" />
+          <div className="p-2 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+            <span className="material-symbols-outlined text-[24px]">build</span>
           </div>
         </div>
 
@@ -181,20 +180,20 @@ export default function MapView() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         
         {/* React Leaflet Map container (occupies 3/4 width on desktop) */}
-        <div className="lg:col-span-3 h-[60vh] md:h-[65vh] relative rounded-2xl border border-slate-800 bg-slate-950 overflow-hidden shadow-2xl z-0">
+        <div className="lg:col-span-3 h-[60vh] md:h-[65vh] relative rounded-2xl border border-outline-variant bg-surface overflow-hidden shadow-sm z-0">
           
           {loading ? (
-            <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm flex flex-col items-center justify-center z-50">
-              <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-              <span className="text-sm text-slate-400 font-medium">Rendering Leaflet map grid...</span>
+            <div className="absolute inset-0 bg-surface/85 backdrop-blur-sm flex flex-col items-center justify-center z-50">
+              <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+              <span className="font-body-sm text-body-sm text-on-surface-variant font-medium">Rendering map grid...</span>
             </div>
           ) : error ? (
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-50 bg-slate-950">
-              <AlertOctagon className="h-10 w-10 text-red-500 mb-3" />
-              <p className="text-sm text-red-400 font-semibold">{error}</p>
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-50 bg-surface">
+              <span className="material-symbols-outlined text-error text-[48px] mb-3">warning</span>
+              <p className="font-label-lg text-label-lg text-error font-semibold">{error}</p>
               <button
                 onClick={fetchData}
-                className="mt-4 px-4 py-2 text-xs font-semibold text-white bg-indigo-650 hover:bg-indigo-550 rounded-lg transition"
+                className="mt-4 px-4 py-2 font-label-md text-label-md text-on-primary bg-primary hover:bg-primary/95 rounded-lg transition"
               >
                 Reload Map Data
               </button>
@@ -230,16 +229,16 @@ export default function MapView() {
           {/* Map Legend */}
           <MapLegend />
 
-          {/* Phase 2 heatmaps warning */}
-          <div className="bg-slate-950/40 border border-slate-800 rounded-xl p-4 space-y-2 text-xs">
-            <h4 className="font-bold text-slate-300 flex items-center gap-1.5">
-              <Layers className="h-4 w-4 text-indigo-400" />
+          {/* Layer info details */}
+          <div className="bg-surface border border-outline-variant rounded-xl p-4 space-y-2 text-xs shadow-sm">
+            <h4 className="font-bold text-on-surface flex items-center gap-1.5 font-label-md text-label-md">
+              <span className="material-symbols-outlined text-primary text-[18px]">layers</span>
               <span>Map Layer Info</span>
             </h4>
-            <p className="text-slate-400 leading-relaxed">
+            <p className="text-on-surface-variant leading-relaxed">
               Markers show real-time coordinates of active response dispatches and incident reports.
             </p>
-            <div className="pt-2 border-t border-slate-900/60 text-[10px] text-slate-500 italic">
+            <div className="pt-2 border-t border-outline-variant/60 text-[10px] text-on-surface-variant/60 italic">
               Note: Heatmap layer will be added in a later phase.
             </div>
           </div>
@@ -251,3 +250,4 @@ export default function MapView() {
     </div>
   );
 }
+

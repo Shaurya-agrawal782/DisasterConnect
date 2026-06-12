@@ -4,30 +4,28 @@ export default function MetricCard({
   label, 
   value, 
   helperText, 
-  icon: Icon, 
-  accentStyle = 'text-white', 
-  iconBgStyle = 'bg-indigo-500/10 text-indigo-400' 
+  icon: iconName, 
+  accentStyle = 'text-primary', 
+  iconBgStyle = 'bg-primary-container/10 text-primary' 
 }) {
   return (
-    <div className="p-6 bg-slate-950/40 border border-slate-800 rounded-2xl flex items-center space-x-4 hover:border-slate-700 transition duration-300">
-      {Icon && (
-        <div className={`p-3.5 rounded-xl ${iconBgStyle}`}>
-          <Icon className="h-6 w-6" />
-        </div>
-      )}
-      <div className="flex-1 min-w-0">
-        <span className="block text-xs text-slate-400 font-semibold uppercase tracking-wider truncate">
-          {label}
-        </span>
-        <span className={`text-3xl font-extrabold mt-1 block truncate ${accentStyle}`}>
+    <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm flex items-start justify-between hover:border-outline transition duration-200">
+      <div className="flex-1 min-w-0 text-left">
+        <p className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider truncate">{label}</p>
+        <h3 className={`font-headline-lg text-headline-lg mt-1 font-bold truncate ${accentStyle}`}>
           {value !== undefined ? value : '0'}
-        </span>
+        </h3>
         {helperText && (
-          <span className="block text-xxs text-slate-500 font-medium mt-1 truncate">
+          <p className="text-xxs text-on-surface-variant mt-1.5 truncate">
             {helperText}
-          </span>
+          </p>
         )}
       </div>
+      {iconName && (
+        <div className={`p-2 rounded shrink-0 flex items-center justify-center ${iconBgStyle}`}>
+          <span className="material-symbols-outlined text-[24px]">{iconName}</span>
+        </div>
+      )}
     </div>
   );
 }

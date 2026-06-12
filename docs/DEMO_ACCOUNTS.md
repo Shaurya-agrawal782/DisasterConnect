@@ -15,3 +15,10 @@ To test administrative features in development:
 - Run the legacy PyQt5 backend launcher or database setup script (`setup_mongodb.py`) which provisions the default `admin` username.
 - In MERN, seed data scripts will be created in the database setup phase.
 - Alternatively, for local testing, the `ALLOW_PUBLIC_ROLE_REGISTRATION=true` flag can be set in the `.env` file when running in `development` mode to temporarily allow registering administrative users from the signup form.
+
+## Seeded Demo Accounts (Local Test Only)
+The user seeding script (`npm run seed:users` inside the `backend` folder) creates the following local-only demo accounts:
+- **Admin**: `admin@disasterconnect.dev` / `Admin@12345`
+- **Responder**: `responder@disasterconnect.dev` / `Responder@12345`
+- **Citizen**: `citizen@disasterconnect.dev` / `Citizen@12345`
+

@@ -4,7 +4,7 @@ import useAuth from '../../hooks/useAuth';
 import AuthShell from '../../components/auth/AuthShell';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
-import { Lock, Mail, ArrowRight, ShieldAlert } from 'lucide-react';
+import { ShieldAlert } from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -32,29 +32,29 @@ export default function Login() {
   return (
     <AuthShell>
       <div className="space-y-6">
-        {/* Title Block */}
-        <div className="space-y-2 text-center lg:text-left">
-          <h1 className="text-3xl font-bold tracking-tight text-on-surface">
-            Command Login
+        {/* Title */}
+        <div className="space-y-1.5 text-center lg:text-left">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            Sign In
           </h1>
-          <p className="text-on-surface-variant text-sm">
-            Access DisasterConnect agency network & public alerts control.
+          <p className="text-slate-500 text-sm">
+            Enter your credentials to access the command center dashboard.
           </p>
         </div>
 
-        {/* Error Alert */}
+        {/* Error Notification */}
         {error && (
-          <div className="p-4 bg-error-container/40 border border-error/20 rounded-xl flex items-start gap-3 text-sm text-on-error-container">
-            <ShieldAlert className="w-5 h-5 text-error shrink-0 mt-0.5" />
+          <div className="p-3 bg-red-50 border border-red-200 rounded-lg flex items-start gap-2.5 text-xs text-red-800">
+            <ShieldAlert className="w-4.5 h-4.5 text-red-600 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
         )}
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block" htmlFor="email">
-              Operational ID / Email
+        {/* Credentials Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider block" htmlFor="email">
+              Email Address
             </label>
             <Input
               id="email"
@@ -63,14 +63,14 @@ export default function Login() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              icon="badge"
+              icon="mail"
               autoComplete="email"
             />
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block" htmlFor="password">
-              Access Code
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider block" htmlFor="password">
+              Password
             </label>
             <Input
               id="password"
@@ -79,7 +79,7 @@ export default function Login() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              icon="key"
+              icon="lock"
               autoComplete="current-password"
             />
           </div>
@@ -87,25 +87,24 @@ export default function Login() {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full justify-center h-12 shadow-sm font-semibold transition-all"
+            className="w-full justify-center h-11 text-xs font-bold transition-all mt-2"
             variant="primary"
           >
-            <span>{loading ? 'Authenticating...' : 'Authenticate'}</span>
-            <ArrowRight className="w-4 h-4 ml-2" />
+            {loading ? 'Authenticating...' : 'Sign In to Platform'}
           </Button>
         </form>
 
-        {/* Footer options */}
-        <div className="pt-6 border-t border-outline-variant space-y-3 text-center lg:text-left text-sm">
-          <div className="text-on-surface-variant">
-            Need public disaster updates?{' '}
-            <Link to="/register" className="text-primary font-semibold hover:underline">
+        {/* Account Swap Links */}
+        <div className="pt-5 border-t border-slate-200 space-y-2 text-center lg:text-left text-xs">
+          <div className="text-slate-500">
+            Need public dashboard access?{' '}
+            <Link to="/register" className="text-blue-600 font-semibold hover:underline">
               Create Citizen Profile
             </Link>
           </div>
           <div>
-            <Link to="/" className="text-on-surface-variant hover:text-on-surface transition-colors inline-flex items-center gap-1">
-              <span>← Back to Landing Page</span>
+            <Link to="/" className="text-slate-500 hover:text-slate-800 transition-colors inline-block">
+              ← Return to landing page
             </Link>
           </div>
         </div>

@@ -35,6 +35,7 @@
 - **UI redesign reference added from Stitch full-app design package.**
 - **UI Step 1.5 completed: generated UI stabilized, invalid Tailwind classes fixed, shell cleanup completed, and public demo credential exposure removed.**
 - **UI Step 2 completed: public landing, login, and register pages redesigned with premium DisasterConnect product experience.**
+- **UI Step 2.1 completed: public and auth pages refined to reduce AI-generated feel and improve product realism.**
 
 ## Next Steps
 - Deploy to Render (backend) and Vercel (frontend) with MongoDB Atlas.

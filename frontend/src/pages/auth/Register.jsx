@@ -4,7 +4,7 @@ import useAuth from '../../hooks/useAuth';
 import AuthShell from '../../components/auth/AuthShell';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
-import { ArrowRight, ShieldAlert } from 'lucide-react';
+import { ShieldAlert } from 'lucide-react';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -20,11 +20,11 @@ export default function Register() {
     setError('');
 
     try {
-      // 1. Call registration API (excluding role, which defaults to citizen)
+      // Register with default 'citizen' role
       await register(name, email, password, undefined, phone);
-      // 2. Perform automatic login to fetch session cookie
+      // Auto login to set context/cookie session
       await login(email, password);
-      // 3. Transition to dashboard
+      // Route to operational dashboard
       navigate('/dashboard');
     } catch (err) {
       setError(
@@ -38,36 +38,33 @@ export default function Register() {
   return (
     <AuthShell>
       <div className="space-y-6">
-        {/* Title Block */}
-        <div className="space-y-2 text-center lg:text-left">
-          <h1 className="text-3xl font-bold tracking-tight text-on-surface">
+        {/* Title block */}
+        <div className="space-y-1.5 text-center lg:text-left">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
             Citizen Registration
           </h1>
-          <p className="text-on-surface-variant text-sm">
-            Create a profile to report hazards and receive local critical alerts.
+          <p className="text-slate-500 text-sm">
+            Create an account to log public safety reports and receive safety alerts.
           </p>
         </div>
 
-        {/* Info Box */}
-        <div className="p-4 bg-surface-container-low border border-outline-variant rounded-xl text-xs text-on-surface-variant leading-relaxed">
-          <span className="font-bold uppercase tracking-wider text-[10px] block mb-1 text-primary">
-            Citizen Account Policy
-          </span>
-          Public accounts are created as <strong>Citizen</strong> profiles. Responder and agency operator accounts are managed by local coordinators.
+        {/* Warning / Account separation notice */}
+        <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 leading-relaxed">
+          <strong>Registration Notice:</strong> Public accounts are created as Citizen users. Admin and responder accounts are managed separately.
         </div>
 
-        {/* Error Alert */}
+        {/* Error notification */}
         {error && (
-          <div className="p-4 bg-error-container/40 border border-error/20 rounded-xl flex items-start gap-3 text-sm text-on-error-container">
-            <ShieldAlert className="w-5 h-5 text-error shrink-0 mt-0.5" />
+          <div className="p-3 bg-red-50 border border-red-200 rounded-lg flex items-start gap-2.5 text-xs text-red-800">
+            <ShieldAlert className="w-4.5 h-4.5 text-red-600 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
         )}
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block font-sans" htmlFor="name">
+        {/* Form fields */}
+        <form onSubmit={handleSubmit} className="space-y-3.5">
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider block" htmlFor="name">
               Full Name
             </label>
             <Input
@@ -82,8 +79,8 @@ export default function Register() {
             />
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block font-sans" htmlFor="email">
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider block" htmlFor="email">
               Email Address
             </label>
             <Input
@@ -98,9 +95,9 @@ export default function Register() {
             />
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block font-sans" htmlFor="phone">
-              Phone Number <span className="text-outline text-[11px] font-normal lowercase">(optional)</span>
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider block" htmlFor="phone">
+              Phone Number <span className="text-slate-400 text-[10px] font-normal lowercase">(optional)</span>
             </label>
             <Input
               id="phone"
@@ -113,9 +110,9 @@ export default function Register() {
             />
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block font-sans" htmlFor="password">
-              Secure Password
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider block" htmlFor="password">
+              Password
             </label>
             <Input
               id="password"
@@ -132,25 +129,24 @@ export default function Register() {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full justify-center h-12 shadow-sm font-semibold transition-all mt-2"
+            className="w-full justify-center h-11 text-xs font-bold transition-all mt-2"
             variant="primary"
           >
-            <span>{loading ? 'Creating Account...' : 'Create Citizen Profile'}</span>
-            <ArrowRight className="w-4 h-4 ml-2" />
+            {loading ? 'Creating Account...' : 'Register Citizen Account'}
           </Button>
         </form>
 
-        {/* Footer Options */}
-        <div className="pt-6 border-t border-outline-variant space-y-3 text-center lg:text-left text-sm">
-          <div className="text-on-surface-variant">
-            Already registered?{' '}
-            <Link to="/login" className="text-primary font-semibold hover:underline">
+        {/* Footer navigation */}
+        <div className="pt-5 border-t border-slate-200 space-y-2 text-center lg:text-left text-xs">
+          <div className="text-slate-500">
+            Already hold active credentials?{' '}
+            <Link to="/login" className="text-blue-600 font-semibold hover:underline">
               Access Command Center
             </Link>
           </div>
           <div>
-            <Link to="/" className="text-on-surface-variant hover:text-on-surface transition-colors inline-flex items-center gap-1">
-              <span>← Back to Landing Page</span>
+            <Link to="/" className="text-slate-500 hover:text-slate-800 transition-colors inline-block">
+              ← Return to landing page
             </Link>
           </div>
         </div>

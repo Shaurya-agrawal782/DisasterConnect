@@ -38,6 +38,7 @@
 - **UI Step 2.1 completed: public and auth pages refined to reduce AI-generated feel and improve product realism.**
 - **Role UX Step completed: Admin, Responder, and Citizen now receive distinct dashboards, navigation, page copy, and visible controls while preserving backend role protection.**
 - **Role UX audit completed: route protection and role-specific controls verified/fixed across dashboards, incidents, and resources.**
+- **QA Hardening Pass 1 completed: responder incident scoping, incident creation role restrictions, alert ObjectId checks, Tailwind cleanup, radius config, dashboard fake metrics, and reports visibility were fixed.**
 
 ## Next Steps
 - Deploy to Render (backend) and Vercel (frontend) with MongoDB Atlas.

@@ -80,41 +80,41 @@ const createIncident = asyncHandler(async (req, res, next) => {
   );
 });
 
-// @desc    Get all incidents with query filters and role-based visibility
-// @route   GET /api/incidents
-// @access  Private
 const getIncidents = asyncHandler(async (req, res, next) => {
   const { status, severity, type, search, page = 1, limit = 10, sort = '-createdAt' } = req.query;
 
-  // Initialize query filters based on user role
+  // Build roleScope conditions
   let roleFilter = {};
-
   if (req.user.role === 'citizen') {
     roleFilter = { reportedBy: req.user._id };
   } else if (req.user.role === 'responder') {
-    roleFilter = {
+    roleFilter = { assignedResponder: req.user._id };
+  }
+
+  // Build user-defined filters
+  const filterQuery = {};
+  if (status) filterQuery.status = status;
+  if (severity) filterQuery.severity = severity;
+  if (type) filterQuery.type = type;
+
+  // Build search query separately
+  let searchQuery = {};
+  if (search) {
+    searchQuery = {
       $or: [
-        { assignedResponder: req.user._id },
-        { status: { $in: ['verified', 'assigned', 'in-progress'] } }
+        { title: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } }
       ]
     };
   }
-  // admin sees all, so roleFilter remains empty {}
 
-  // Apply user-defined filters
-  const query = { ...roleFilter };
+  // Combine conditions securely with $and
+  const andConditions = [];
+  if (Object.keys(roleFilter).length > 0) andConditions.push(roleFilter);
+  if (Object.keys(filterQuery).length > 0) andConditions.push(filterQuery);
+  if (Object.keys(searchQuery).length > 0) andConditions.push(searchQuery);
 
-  if (status) query.status = status;
-  if (severity) query.severity = severity;
-  if (type) query.type = type;
-
-  // Search keyword in title or description
-  if (search) {
-    query.$or = [
-      { title: { $regex: search, $options: 'i' } },
-      { description: { $regex: search, $options: 'i' } }
-    ];
-  }
+  const query = andConditions.length > 0 ? { $and: andConditions } : {};
 
   // Pagination parameters
   const pageNum = parseInt(page, 10);

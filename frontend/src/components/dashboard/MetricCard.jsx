@@ -16,7 +16,7 @@ export default function MetricCard({
           {value !== undefined ? value : '0'}
         </h3>
         {helperText && (
-          <p className="text-xxs text-on-surface-variant mt-1.5 truncate">
+          <p className="text-[10px] text-on-surface-variant mt-1.5 truncate">
             {helperText}
           </p>
         )}

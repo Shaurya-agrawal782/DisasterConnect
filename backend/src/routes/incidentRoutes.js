@@ -16,7 +16,7 @@ const { authorizeRoles } = require('../middleware/roleMiddleware');
 const router = express.Router();
 
 // General protected routes
-router.post('/', protect, createIncident);
+router.post('/', protect, authorizeRoles('admin', 'citizen'), createIncident);
 router.get('/', protect, getIncidents);
 router.get('/:id', protect, getIncidentById);
 

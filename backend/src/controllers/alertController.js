@@ -61,7 +61,7 @@ const markAlertRead = asyncHandler(async (req, res, next) => {
   }
 
   // Authorize: Ensure the alert is targeted to this user or role
-  const isTarget = alert.targetUsers.includes(req.user._id) || alert.targetRoles.includes(req.user.role);
+  const isTarget = alert.targetUsers.some(id => id.toString() === req.user._id.toString()) || alert.targetRoles.includes(req.user.role);
   if (!isTarget) {
     return next(new AppError(403, 'Access denied. You are not authorized to read this alert.'));
   }

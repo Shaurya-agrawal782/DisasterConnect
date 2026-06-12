@@ -13,6 +13,12 @@ export default function AdminDashboard({ data, user, fetchDashboardData }) {
   const availRes = summary?.resources?.available || 0;
   const availPercent = Math.min(Math.round((availRes / totalRes) * 100), 100);
 
+  const busyRes = summary?.resources?.busy || 0;
+  const busyPercent = Math.min(Math.round((busyRes / totalRes) * 100), 100);
+
+  const maintRes = summary?.resources?.maintenance || 0;
+  const maintPercent = Math.min(Math.round((maintRes / totalRes) * 100), 100);
+
   return (
     <div className="space-y-6 text-left">
       {/* Overview stats */}
@@ -157,21 +163,21 @@ export default function AdminDashboard({ data, user, fetchDashboardData }) {
 
               <div>
                 <div className="flex justify-between text-xs mb-1">
-                  <span className="text-slate-500">Staging Capacity</span>
-                  <span className="text-amber-600 font-bold">60%</span>
+                  <span className="text-slate-500">Active Deployments</span>
+                  <span className="text-amber-600 font-bold">{busyPercent}%</span>
                 </div>
                 <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                  <div className="bg-amber-500 h-full" style={{ width: '60%' }}></div>
+                  <div className="bg-amber-500 h-full" style={{ width: `${busyPercent}%` }}></div>
                 </div>
               </div>
 
               <div>
                 <div className="flex justify-between text-xs mb-1">
-                  <span className="text-slate-500">Rations Dispatch Rate</span>
-                  <span className="text-error font-bold">25%</span>
+                  <span className="text-slate-500">In Maintenance</span>
+                  <span className="text-error font-bold">{maintPercent}%</span>
                 </div>
                 <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                  <div className="bg-error h-full" style={{ width: '25%' }}></div>
+                  <div className="bg-error h-full" style={{ width: `${maintPercent}%` }}></div>
                 </div>
               </div>
             </div>

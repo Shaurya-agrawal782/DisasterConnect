@@ -60,7 +60,7 @@ export function getSeverityBadgeVariant(severity) {
     case 'medium':
       return 'bg-amber-100 text-amber-800 border border-amber-200';
     case 'high':
-      return 'bg-orange-100 text-orange-850 border border-orange-200';
+      return 'bg-orange-100 text-orange-800 border border-orange-200';
     case 'critical':
       return 'bg-error-container text-on-error-container border border-error/20 font-bold animate-pulse';
     default:

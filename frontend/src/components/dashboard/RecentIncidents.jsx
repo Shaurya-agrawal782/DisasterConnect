@@ -7,9 +7,9 @@ export default function RecentIncidents({ incidents = [] }) {
       case 'low':
         return <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] uppercase font-bold rounded">Low</span>;
       case 'medium':
-        return <span className="px-2 py-0.5 bg-amber-100 text-amber-850 text-[10px] uppercase font-bold rounded">Medium</span>;
+        return <span className="px-2 py-0.5 bg-amber-100 text-amber-800 text-[10px] uppercase font-bold rounded">Medium</span>;
       case 'high':
-        return <span className="px-2 py-0.5 bg-orange-100 text-orange-850 text-[10px] uppercase font-bold rounded">High</span>;
+        return <span className="px-2 py-0.5 bg-orange-100 text-orange-800 text-[10px] uppercase font-bold rounded">High</span>;
       case 'critical':
         return <span className="px-2 py-0.5 bg-error-container text-on-error-container text-[10px] uppercase font-bold rounded animate-pulse">Critical</span>;
       default:

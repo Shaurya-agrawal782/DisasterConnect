@@ -26,6 +26,7 @@
 - **Step 7A completed**: backend incident management API added with role-based access and geospatial-ready schema.
 - **Step 7B completed**: frontend incident management UI added with create, list, details, assignment, and status update flows.
 - **Step 8A completed**: resource management module added with backend APIs, seed resources, and frontend CRUD UI.
+- **Step 9A completed**: interactive map added with incident and resource markers, filters, legends, and GeoJSON coordinate conversion.
 
 ## Next Steps
 - Implement and set up the Express.js backend.

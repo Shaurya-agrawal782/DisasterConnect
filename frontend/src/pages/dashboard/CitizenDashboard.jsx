@@ -16,7 +16,7 @@ export default function CitizenDashboard({ data, user, fetchDashboardData }) {
         <div className="space-y-2 max-w-xl">
           <h2 className="text-xl font-bold text-white">Need emergency assistance or report a hazard?</h2>
           <p className="text-xs text-slate-300 leading-relaxed">
-            Submit details, upload descriptors, and pinpoint hazard coordinates instantly. Submitted logs are routed to the central dispatcher map for review and team dispatch.
+            Submit details, describe the hazard status, and pinpoint coordinates instantly. Submitted logs are routed to the central dispatcher map for review and team dispatch.
           </p>
         </div>
         <Link

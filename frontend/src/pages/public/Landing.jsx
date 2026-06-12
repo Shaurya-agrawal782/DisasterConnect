@@ -320,7 +320,7 @@ export default function Landing() {
                   <span className="text-xs font-bold text-slate-400 block uppercase">Role 03</span>
                   <h4 className="font-bold text-base text-slate-900">Citizen User</h4>
                   <p className="text-slate-500 text-xs leading-relaxed">
-                    Submits local safety reports. Views active safety alerts in their region and checks supply counts at local staging centers.
+                    Submits local safety reports, receives global safety alert broadcasts, and tracks their reported incidents in real-time.
                   </p>
                 </div>
                 <Link to="/register" className="text-blue-600 text-xs font-semibold hover:underline inline-flex items-center gap-1.5 pt-4">

@@ -126,7 +126,7 @@ Copy the example variables into local `.env` files in both directories:
 ```env
 PORT=5000
 NODE_ENV=development
-MONGO_URI=mongodb://localhost:27017/disasterconnect
+MONGODB_URI=mongodb://localhost:27017/disasterconnect
 JWT_SECRET=your_jwt_secret_key_here
 CLIENT_URL=http://localhost:5173
 ```
@@ -148,8 +148,8 @@ VITE_API_URL=http://localhost:5000/api
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/Razee4315/DisasterConnect.git
-   cd DisasterConnect
+   git clone https://github.com/Shaurya-agrawal782/lnct-hack.git
+   cd lnct-hack
    ```
 
 2. **Backend Setup:**
@@ -157,7 +157,7 @@ VITE_API_URL=http://localhost:5000/api
    cd backend
    npm install
    cp .env.example .env
-   # Ensure MONGO_URI is set correctly
+   # Ensure MONGODB_URI is set correctly in .env
    ```
 
 3. **Seed the Database (Mandatory for Demo):**
@@ -172,6 +172,21 @@ VITE_API_URL=http://localhost:5000/api
    npm install
    cp .env.example .env
    ```
+
+5. **Run the Application Locally:**
+   - **Start Backend Server (Port 5000):**
+     ```bash
+     cd ../backend
+     npm run dev
+     ```
+   - **Start Frontend App (Port 5173):**
+     ```bash
+     cd ../frontend
+     npm run dev
+     ```
+   - **Local Ports:**
+     - Backend API: `http://localhost:5000` (Health Check: `http://localhost:5000/api/health`)
+     - Frontend Dev Server: `http://localhost:5173`
 
 ---
 
@@ -192,7 +207,7 @@ VITE_API_URL=http://localhost:5000/api
 
 ## 🔑 Demo Accounts Reference
 
-To evaluate the system quickly, we provision default profiles via seed scripts. Refer to [DEMO_ACCOUNTS.md](file:///d:/projects/lnct%20hack/docs/DEMO_ACCOUNTS.md) for full credential mappings.
+To evaluate the system quickly, we provision default profiles via seed scripts. Refer to [DEMO_ACCOUNTS.md](docs/DEMO_ACCOUNTS.md) for full credential mappings.
 
 | Role | Username / Email | Password |
 | :--- | :--- | :--- |
@@ -204,9 +219,9 @@ To evaluate the system quickly, we provision default profiles via seed scripts. 
 
 ## 🎬 Demo Workflow & API
 
-- **Interactive Walkthrough Guide:** Check [DEMO_FLOW.md](file:///d:/projects/lnct%20hack/docs/DEMO_FLOW.md) for step-by-step reporting, assignment, real-time map syncing, and resolution tasks.
-- **API Reference Guide:** Check [API_OVERVIEW.md](file:///d:/projects/lnct%20hack/docs/API_OVERVIEW.md) for detailed descriptions of all Express endpoints.
-- **Deployment Configuration Guide:** Check [DEPLOYMENT_GUIDE.md](file:///d:/projects/lnct%20hack/docs/DEPLOYMENT_GUIDE.md) for instructions on setting up MongoDB Atlas, Render, and Vercel.
+- **Interactive Walkthrough Guide:** Check [DEMO_FLOW.md](docs/DEMO_FLOW.md) for step-by-step reporting, assignment, real-time map syncing, and resolution tasks.
+- **API Reference Guide:** Check [API_OVERVIEW.md](docs/API_OVERVIEW.md) for detailed descriptions of all Express endpoints.
+- **Deployment Configuration Guide:** Check [DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md) for instructions on setting up MongoDB Atlas, Render, and Vercel.
 
 
 ---

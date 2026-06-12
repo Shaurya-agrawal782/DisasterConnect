@@ -37,7 +37,7 @@ Base endpoint: `/api/incidents`
 
 | Method | Endpoint | Access Role | Description |
 | :--- | :--- | :--- | :--- |
-| **POST** | `/` | Admin, Responder, Citizen | Submits a new incident. Requires title, description, category, severity, and latitude/longitude coordinates. |
+| **POST** | `/` | Admin, Citizen | Submits a new incident. Requires title, description, type, severity, and location coordinates. |
 | **GET** | `/` | Admin, Responder, Citizen | Lists incidents. Supports filtering via URL queries (status, severity, search, etc.). |
 | **GET** | `/:id` | Admin, Responder, Citizen | Retrieves detailed info for a single incident, including assigned responder and dispatched resources list. |
 | **PATCH**| `/:id` | Admin Only | Performs general metadata field edits. |

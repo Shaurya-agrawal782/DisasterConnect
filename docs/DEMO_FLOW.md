@@ -12,7 +12,7 @@ Ensure MongoDB is running locally on your workstation.
    ```bash
    cd backend
    npm install
-   cp .env.example .env     # Set correct MONGO_URI if necessary
+   cp .env.example .env     # Set correct MONGODB_URI if necessary
    npm run seed:users       # Seeds default test profiles
    npm run seed:resources   # Seeds default supply stocks
    npm run dev              # Starts nodemon listener on http://localhost:5000

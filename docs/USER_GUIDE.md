@@ -1,203 +1,49 @@
 # DisasterConnect User Guide
 
-Welcome to DisasterConnect! This guide will help you understand and use all the features of our disaster response coordination platform.
-
-## Table of Contents
-- [Getting Started](#getting-started)
-- [Dashboard Overview](#dashboard-overview)
-- [Incident Management](#incident-management)
-- [Resource Management](#resource-management)
-- [Communication System](#communication-system)
-- [Reports and Analytics](#reports-and-analytics)
-- [Troubleshooting](#troubleshooting)
-
-## Getting Started
-
-### Installation
-Follow the installation steps in the [README.md](../README.md).
-
-### First Login
-1. Launch the application
-2. Create an account or log in
-3. Complete your profile setup
-
-### Logging In
-![Login Interface](screenshots/1.png)
-To access DisasterConnect, use your provided credentials at the login screen. The system supports role-based access control, ensuring users have appropriate permissions for their responsibilities.
-
-## Dashboard Overview
-![Dashboard Overview](screenshots/2.png)
-The dashboard provides a comprehensive view of current situations, including:
-- Active incidents
-- Available resources
-- Recent updates
-- Key metrics and statistics
-
-### Navigation
-- Use the sidebar menu to access different sections
-- Quick action buttons for common tasks
-- Real-time notifications area
-
-## Incident Management
-
-### Creating an Incident
-1. Click "New Incident"
-2. Fill in:
-   - Incident title
-   - Location
-   - Severity level
-   - Description
-   - Required resources
-
-### Updating Incidents
-- Edit incident details
-- Update status
-- Add notes
-- Assign resources
-
-### Incident Status Tracking
-- Monitor progress
-- View timeline
-- Check resource allocation
-
-## Managing Incidents
-![Incident Management](screenshots/3.png)
-The incident management interface allows you to:
-- Create new incident reports
-- Update incident status
-- Assign priority levels
-- Track response progress
-- Add comments and updates
-
-## Resource Management
-
-### Adding Resources
-1. Go to Resources tab
-2. Click "Add New"
-3. Enter:
-   - Resource type
-   - Quantity
-   - Location
-   - Status
-   - Specifications
-
-### Resource Allocation
-- Assign to incidents
-- Track usage
-- Monitor availability
-- Schedule maintenance
-
-## Resource Management
-![Resource Management](screenshots/4.png)
-Efficiently manage and track resources:
-- View available resources
-- Allocate resources to incidents
-- Track resource deployment
-- Monitor resource status
-- Generate resource reports
-
-## Map Visualization
-![Map Interface](screenshots/5.png)
-The interactive map provides:
-- Real-time incident locations
-- Resource distribution visualization
-- Geographic analysis tools
-- Route planning capabilities
-- Area impact assessment
-
-## Communication System
-
-### Sending Messages
-- Direct messaging
-- Team broadcasts
-- Status updates
-- Emergency alerts
-
-### Communication Channels
-- Team chat
-- Incident-specific channels
-- Resource coordination
-- Emergency broadcast
-
-## Communication System
-![Communication Hub](screenshots/6.png)
-Stay connected with team members:
-- Real-time messaging
-- Team coordination
-- File sharing
-- Status updates
-- Alert notifications
-
-## Reports and Analytics
-
-### Generating Reports
-1. Select report type
-2. Choose date range
-3. Select metrics
-4. Generate and export
-
-### Available Reports
-- Incident summary
-- Resource utilization
-- Response time analytics
-- Team performance
-
-## Analytics and Reporting
-![Analytics Dashboard](screenshots/7.png)
-Generate insights with our analytics tools:
-- Custom report generation
-- Data visualization
-- Trend analysis
-- Performance metrics
-- Response time analytics
-
-## Troubleshooting
-
-### Common Issues
-- Login problems
-- Data sync issues
-- Map display problems
-- Resource tracking errors
-
-### Support
-If you encounter any issues:
-1. Check our [FAQ](FAQ.md)
-2. Contact support: saqlainrazee@gmail.com
-3. Submit an issue on GitHub
-
-## Tips and Best Practices
-
-1. Regular Updates
-   - Keep the application updated
-   - Check for new features
-   - Review documentation updates
-
-2. Data Management
-   - Regular backups
-   - Clean old records
-   - Update resource status
-
-3. Team Coordination
-   - Clear communication
-   - Regular status updates
-   - Proper handover procedures
-
-## Keyboard Shortcuts
-
-| Action | Shortcut |
-|--------|----------|
-| New Incident | Ctrl+N |
-| Save | Ctrl+S |
-| Refresh | F5 |
-| Search | Ctrl+F |
-| Help | F1 |
-
-## Additional Resources
-
-- [API Documentation](API.md)
-- [Video Tutorials](https://github.com/Razee4315/DisasterConnect/wiki/Tutorials)
-- [Community Forums](https://github.com/Razee4315/DisasterConnect/discussions)
+Welcome to DisasterConnect! This guide explains how to navigate the platform, test role-scoped features, and explore key system integrations during evaluation.
 
 ---
 
-For technical support or feature requests, please visit our [GitHub repository](https://github.com/Razee4315/DisasterConnect).
+## 🗺️ System Sections
+
+### 1. Landing & Authentication
+- **Landing Page:** Serves as the operational portal introducing the system’s modules (Incident Scoping, Resource Dispatch, Alert Broadcasting).
+- **Registration:** Public registration is permitted only for the **Citizen** role to maintain administrative and responder integrity.
+- **Login:** Performs credential verification and sets secure, HTTP-only session cookies.
+
+### 2. Role-Scoped Dashboards
+- **Admin Command Center:** Offers dynamic metric cards (active/critical counts, unread notifications) alongside live Recharts visual charts, resource inventory levels, and command actions.
+- **Responder Dashboard:** Shows current task queue status charts and direct links to active dispatches.
+- **Citizen Portal:** Focused on quick hazard reporting, displaying personal report status charts and safety updates.
+
+### 3. Incident Lifecycle Management
+- **Reporting Incidents (Citizen/Admin):** Users can report incidents by entering a title, description, category type, severity level, and pinpointing coordinates.
+- **Verification & Scoping:** Admins view all logged incidents. Citizens view only their own logs. Responders view only incidents assigned to them.
+- **Assignment (Admin):** Admins can click on an incident to assign a designated responder and dispatch logistical resources.
+- **Status Updates (Admin/Responder):** Responders or admins can transition incident states (e.g. from `assigned` to `in-progress` to `resolved`). Resolving or closing an incident automatically triggers a resource release, restoring supply counts back to the warehouse inventory.
+
+### 4. Logistics & Resources
+- **Resource Logs (Admin/Responder):** Displays stock levels of medical kits, food, water, and first-responder personnel.
+- **CRUD Operations (Admin):** Admins can create new resource records, update inventory quantities, or mark items for maintenance.
+
+### 5. Interactive Operational Map (Admin/Responder)
+- **Leaflet Integration:** Loads map layers with dynamic coordinate markers for active incidents (color-coded by severity) and resource locations.
+- **Filters & Legend:** Allows toggling map markers by category type or status.
+
+### 6. Real-Time Alert Broadcasts
+- **Socket.io Stream:** Instantly pushes urgent notifications to active dashboards when incidents are created, responders are assigned, or status updates occur.
+- **Alert Feed:** Users can view unread notifications and click to mark individual alerts as read, or use "Mark All as Read."
+
+### 7. Analytical Reports (Admin Only)
+- **Printable Reports Summary:** Contains status analytics, category breakdowns, and dispatch ratios. Admins can click "Print Summary" to print or export the reports.
+
+---
+
+## 💡 Practical Demo Walkthrough
+
+To experience the platform's full capabilities, we recommend running this interactive flow:
+
+1. **Submit a Report:** Log in as **Citizen** (`citizen@disasterconnect.dev` / `Citizen@12345`). Click **Report Incident**, enter location details (e.g. coordinates `[80.2, 23.2]`), and submit.
+2. **Review & Dispatch:** Log out and log in as **Admin** (`admin@disasterconnect.dev` / `Admin@12345`). You will notice a real-time warning alert popup. Go to the **Incidents** log, select the reported incident, assign the **Responder User**, and dispatch a resource (e.g. Food Packets).
+3. **Resolve Incident:** Log out and log in as **Responder** (`responder@disasterconnect.dev` / `Responder@12345`). You will see the incident in your list. Open it and transition the status to **Resolved**.
+4. **Logistics Auto-Release:** Log back in as **Admin** and verify the dispatched resource has been released and inventory counts have reverted to normal.

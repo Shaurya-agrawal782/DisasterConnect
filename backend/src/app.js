@@ -5,6 +5,7 @@ const morgan = require('morgan');
 
 const env = require('./config/env');
 const healthRoutes = require('./routes/healthRoutes');
+const authRoutes = require('./routes/authRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(cors({
 
 // Route mounts
 app.use('/api', healthRoutes);
+app.use('/api/auth', authRoutes);
 
 // 404 Route Not Found interceptor
 app.use(notFound);

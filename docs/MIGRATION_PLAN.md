@@ -20,6 +20,7 @@
 - **Step 2 completed**: original Python prototype moved to legacy-python/.
 - **Step 3 completed**: MERN foundation created with backend/ and frontend/ folders.
 - **Step 4 completed**: backend database connection and core server architecture added.
+- **Step 5 completed**: backend JWT authentication and role-based access added for the MERN app. Legacy SHA-256 users are not reused.
 
 ## Next Steps
 - Implement and set up the Express.js backend.

@@ -79,29 +79,35 @@ const incidentSchema = new mongoose.Schema(
     }],
     statusHistory: [statusHistorySchema],
     aiTriage: {
-      shortSummary: String,
-      riskScore: Number,
-      recommendedPriority: {
-        type: String,
-        enum: ['low', 'medium', 'high', 'critical']
+      type: {
+        shortSummary: String,
+        riskScore: Number,
+        recommendedPriority: {
+          type: String,
+          enum: ['low', 'medium', 'high', 'critical']
+        },
+        likelyRisks: {
+          type: [String],
+          default: undefined
+        },
+        immediateActions: {
+          type: [String],
+          default: undefined
+        },
+        responderChecklist: {
+          type: [String],
+          default: undefined
+        },
+        citizenSafetyNote: String,
+        confidence: {
+          type: String,
+          enum: ['low', 'medium', 'high']
+        },
+        disclaimer: String,
+        generatedAt: Date,
+        provider: String
       },
-      likelyRisks: [String],
-      immediateActions: [String],
-      responderChecklist: [String],
-      citizenSafetyNote: String,
-      confidence: {
-        type: String,
-        enum: ['low', 'medium', 'high']
-      },
-      disclaimer: String,
-      generatedAt: {
-        type: Date,
-        default: Date.now
-      },
-      provider: {
-        type: String,
-        default: 'Gemini'
-      }
+      default: undefined
     }
   },
   {

@@ -39,6 +39,28 @@ const userSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
+    },
+    responderProfile: {
+      responderId: String,
+      phone: String,
+      department: String,
+      specialization: String,
+      serviceZone: String,
+      shift: String,
+      emergencyContactName: String,
+      emergencyContactPhone: String,
+      verificationStatus: {
+        type: String,
+        enum: ["pending", "verified", "suspended"],
+        default: "verified"
+      },
+      certifications: [String],
+      adminNotes: String,
+      verifiedAt: Date,
+      verifiedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      }
     }
   },
   {

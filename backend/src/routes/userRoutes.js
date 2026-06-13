@@ -3,6 +3,7 @@ const {
   getResponders,
   createResponder,
   updateResponderStatus,
+  updateResponderProfile,
   deleteResponder
 } = require('../controllers/userController');
 const { protect } = require('../middleware/authMiddleware');
@@ -20,6 +21,9 @@ router.route('/responders')
 
 router.route('/responders/:id/status')
   .patch(updateResponderStatus);
+
+router.route('/responders/:id/profile')
+  .patch(updateResponderProfile);
 
 router.route('/responders/:id')
   .delete(deleteResponder);

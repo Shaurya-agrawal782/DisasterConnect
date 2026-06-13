@@ -15,6 +15,11 @@ export const updateResponderStatus = async (id, isActive) => {
   return response.data;
 };
 
+export const updateResponderProfile = async (id, payload) => {
+  const response = await client.patch(`/users/responders/${id}/profile`, payload);
+  return response.data;
+};
+
 export const deleteResponder = async (id) => {
   const response = await client.delete(`/users/responders/${id}`);
   return response.data;

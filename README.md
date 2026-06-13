@@ -46,7 +46,7 @@ In critical event crowds, crowd density transitions to crowd hazard in seconds. 
 - **AI Report Assistant:** Pre-submit natural language incident draft helper classifying incident type/severity and suggesting safety tips. Built backend-only to preserve Gemini key security.
 - **Incident Geolocation Lock:** Citizen incident reports enforce device GPS/browser geolocation with manual coordinates inputs disabled to prevent spoofing. Human-readable context is collected via landmark inputs.
 - **Incident Ticket Tracking:** Every incident is assigned a unique human-readable ticket number (`DC-YYYYMMDD-XXXXX`). Citizens see their ticket on the submission success screen, on report cards, and in detail views. A public `/track-report` page allows anyone to check incident status, safety notes, and status timeline using only a ticket number — without exposing reporter identity, GPS coordinates, or internal notes.
-- **Admin Responder Management:** Admins can provision responder accounts, view a directory of all responders (active and inactive), toggle account status (deactivate/activate), and safely delete responder accounts (blocked if they have active incidents). Public registration remains citizen-only.
+- **Admin Responder Management & Safety Profiles:** Admins can provision responder accounts, manage safety profiles (badge ID, specialization, zone, department), toggle status (deactivate/activate), set verification status (pending, verified, suspended), and safely delete responder accounts (blocked if they have active incidents). Only active, verified responders can be assigned to incidents. Public registration remains citizen-only.
 
 ---
 

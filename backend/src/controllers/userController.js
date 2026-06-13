@@ -10,13 +10,18 @@ const asyncHandler = require('../utils/asyncHandler');
 const getResponders = asyncHandler(async (req, res, next) => {
   const query = { role: 'responder' };
   
-  // If not explicitly requesting all, filter by active only (e.g. for assignment)
+  // If not explicitly requesting all, filter by active & verified only (e.g. for assignment)
   if (req.query.all !== 'true') {
     query.isActive = true;
+    query.$or = [
+      { 'responderProfile.verificationStatus': 'verified' },
+      { responderProfile: { $exists: false } },
+      { 'responderProfile.verificationStatus': { $exists: false } }
+    ];
   }
 
   const responders = await User.find(query)
-    .select('name email phone role isActive createdAt updatedAt')
+    .select('name email phone role isActive responderProfile createdAt updatedAt')
     .sort('-createdAt');
 
   res.status(200).json(
@@ -28,10 +33,25 @@ const getResponders = asyncHandler(async (req, res, next) => {
 // @route   POST /api/users/responders
 // @access  Private (Admin only)
 const createResponder = asyncHandler(async (req, res, next) => {
-  const { name, email, password, phone } = req.body;
+  const { 
+    name, 
+    email, 
+    password, 
+    phone,
+    responderId,
+    department,
+    specialization,
+    serviceZone,
+    shift,
+    emergencyContactName,
+    emergencyContactPhone,
+    certifications,
+    adminNotes
+  } = req.body;
 
-  if (!name || !email || !password) {
-    return next(new AppError(400, 'Please provide name, email, and password.'));
+  // Enforce required fields validation
+  if (!name || !email || !password || !phone || !responderId || !department || !specialization || !serviceZone) {
+    return next(new AppError(400, 'Please provide all required fields: Name, Email, Password, Phone, Responder ID, Department, Specialization, and Service Zone.'));
   }
 
   // Prevent duplicate email
@@ -39,6 +59,25 @@ const createResponder = asyncHandler(async (req, res, next) => {
   if (existingUser) {
     return next(new AppError(400, 'An account with this email address already exists.'));
   }
+
+  // Build the responder profile subdocument
+  const responderProfile = {
+    responderId,
+    phone,
+    department,
+    specialization,
+    serviceZone,
+    shift: shift || '',
+    emergencyContactName: emergencyContactName || '',
+    emergencyContactPhone: emergencyContactPhone || '',
+    verificationStatus: 'verified',
+    certifications: typeof certifications === 'string'
+      ? certifications.split(',').map(c => c.trim()).filter(Boolean)
+      : (Array.isArray(certifications) ? certifications : []),
+    adminNotes: adminNotes || '',
+    verifiedAt: new Date(),
+    verifiedBy: req.user._id
+  };
 
   // Create and save responder
   const responder = await User.create({
@@ -48,7 +87,8 @@ const createResponder = asyncHandler(async (req, res, next) => {
     phone,
     role: 'responder',
     isActive: true,
-    createdBy: req.user._id
+    createdBy: req.user._id,
+    responderProfile
   });
 
   const responderResponse = responder.toObject();
@@ -107,6 +147,80 @@ const updateResponderStatus = asyncHandler(async (req, res, next) => {
   );
 });
 
+// @desc    Update a responder's safety profile details
+// @route   PATCH /api/users/responders/:id/profile
+// @access  Private (Admin only)
+const updateResponderProfile = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  const {
+    phone,
+    responderId,
+    department,
+    specialization,
+    serviceZone,
+    shift,
+    emergencyContactName,
+    emergencyContactPhone,
+    verificationStatus,
+    certifications,
+    adminNotes
+  } = req.body;
+
+  const responder = await User.findById(id);
+  if (!responder) {
+    return next(new AppError(404, 'Responder not found.'));
+  }
+  if (responder.role !== 'responder') {
+    return next(new AppError(400, 'Only responder accounts can have safety profiles.'));
+  }
+
+  // Initialize responderProfile subdocument if it's missing
+  if (!responder.responderProfile) {
+    responder.responderProfile = {};
+  }
+
+  // Keep phone in sync
+  if (phone !== undefined) {
+    responder.phone = phone;
+    responder.responderProfile.phone = phone;
+  }
+
+  if (responderId !== undefined) responder.responderProfile.responderId = responderId;
+  if (department !== undefined) responder.responderProfile.department = department;
+  if (specialization !== undefined) responder.responderProfile.specialization = specialization;
+  if (serviceZone !== undefined) responder.responderProfile.serviceZone = serviceZone;
+  if (shift !== undefined) responder.responderProfile.shift = shift;
+  if (emergencyContactName !== undefined) responder.responderProfile.emergencyContactName = emergencyContactName;
+  if (emergencyContactPhone !== undefined) responder.responderProfile.emergencyContactPhone = emergencyContactPhone;
+  if (adminNotes !== undefined) responder.responderProfile.adminNotes = adminNotes;
+
+  if (certifications !== undefined) {
+    responder.responderProfile.certifications = typeof certifications === 'string'
+      ? certifications.split(',').map(c => c.trim()).filter(Boolean)
+      : (Array.isArray(certifications) ? certifications : []);
+  }
+
+  if (verificationStatus !== undefined) {
+    const previousStatus = responder.responderProfile.verificationStatus;
+    responder.responderProfile.verificationStatus = verificationStatus;
+
+    // Record verification details when transitioning to verified state
+    if (verificationStatus === 'verified' && previousStatus !== 'verified') {
+      responder.responderProfile.verifiedAt = new Date();
+      responder.responderProfile.verifiedBy = req.user._id;
+    }
+  }
+
+  await responder.save();
+
+  const responderResponse = responder.toObject();
+  delete responderResponse.password;
+
+  res.status(200).json(
+    new ApiResponse(200, { responder: responderResponse }, 'Responder profile updated successfully.')
+  );
+});
+
 // @desc    Safely delete a responder account
 // @route   DELETE /api/users/responders/:id
 // @access  Private (Admin only)
@@ -143,5 +257,6 @@ module.exports = {
   getResponders,
   createResponder,
   updateResponderStatus,
+  updateResponderProfile,
   deleteResponder
 };

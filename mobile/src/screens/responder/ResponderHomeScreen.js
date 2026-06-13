@@ -43,7 +43,7 @@ export default function ResponderHomeScreen({ navigation }) {
 
           <TouchableOpacity
             style={styles.menuCard}
-            onPress={() => navigation.navigate('AlertsPlaceholder')}
+            onPress={() => navigation.navigate('Alerts')}
           >
             <View style={styles.cardHeader}>
               <Text style={styles.cardIcon}>🔔</Text>

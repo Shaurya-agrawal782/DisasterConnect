@@ -201,7 +201,7 @@ A separate Expo React Native mobile client is located under the `mobile/` direct
   npx expo start
   ```
 - **Backend Sync:** Interfaces directly with the deployed API (`https://disasterconnect-87so.onrender.com/api`).
-- **Features:** Role-based navigation redirecting to Citizen reporting dashboard or Field Responder task logs, utilizing secure JWT Bearer authorization persistence.
+- **Features:** Secure JWT Bearer token authorization persistence, role-based screen routing, and GPS-enabled emergency incident reporting for Citizen users (with Nominatim reverse geocoding and manual coordinate override).
 
 ---
 

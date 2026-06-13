@@ -8,7 +8,7 @@ import RegisterScreen from '../screens/auth/RegisterScreen';
 import LoadingScreen from '../screens/common/LoadingScreen';
 import AlertsPlaceholderScreen from '../screens/common/AlertsPlaceholderScreen';
 import CitizenHomeScreen from '../screens/citizen/CitizenHomeScreen';
-import ReportIncidentPlaceholderScreen from '../screens/citizen/ReportIncidentPlaceholderScreen';
+import ReportIncidentScreen from '../screens/citizen/ReportIncidentScreen';
 import MyReportsPlaceholderScreen from '../screens/citizen/MyReportsPlaceholderScreen';
 import ResponderHomeScreen from '../screens/responder/ResponderHomeScreen';
 import AssignedIncidentsPlaceholderScreen from '../screens/responder/AssignedIncidentsPlaceholderScreen';
@@ -60,17 +60,17 @@ export default function AppNavigator() {
                 options={{ title: 'Citizen Reporting' }}
               />
               <Stack.Screen 
-                name="ReportIncidentPlaceholder" 
-                component={ReportIncidentPlaceholderScreen} 
+                name="ReportIncident" 
+                component={ReportIncidentScreen} 
                 options={{ title: 'Report Incident' }}
               />
               <Stack.Screen 
-                name="MyReportsPlaceholder" 
+                name="MyReports" 
                 component={MyReportsPlaceholderScreen} 
                 options={{ title: 'My Incident Reports' }}
               />
               <Stack.Screen 
-                name="AlertsPlaceholder" 
+                name="Alerts" 
                 component={AlertsPlaceholderScreen} 
                 options={{ title: 'Notifications & Alerts' }}
               />
@@ -90,7 +90,7 @@ export default function AppNavigator() {
                 options={{ title: 'Assigned Incidents' }}
               />
               <Stack.Screen 
-                name="AlertsPlaceholder" 
+                name="Alerts" 
                 component={AlertsPlaceholderScreen} 
                 options={{ title: 'Notifications & Alerts' }}
               />

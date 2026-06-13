@@ -29,7 +29,7 @@ export default function CitizenHomeScreen({ navigation }) {
         {/* Primary CTA - Report Incident */}
         <TouchableOpacity
           style={styles.emergencyBtn}
-          onPress={() => navigation.navigate('ReportIncidentPlaceholder')}
+          onPress={() => navigation.navigate('ReportIncident')}
         >
           <Text style={styles.emergencyBtnTitle}>🚨 REPORT INCIDENT</Text>
           <Text style={styles.emergencyBtnSubtitle}>File a new emergency report</Text>
@@ -39,7 +39,7 @@ export default function CitizenHomeScreen({ navigation }) {
         <View style={styles.grid}>
           <TouchableOpacity
             style={styles.card}
-            onPress={() => navigation.navigate('MyReportsPlaceholder')}
+            onPress={() => navigation.navigate('MyReports')}
           >
             <Text style={styles.cardIcon}>📁</Text>
             <Text style={styles.cardTitle}>My Reports</Text>
@@ -48,7 +48,7 @@ export default function CitizenHomeScreen({ navigation }) {
 
           <TouchableOpacity
             style={styles.card}
-            onPress={() => navigation.navigate('AlertsPlaceholder')}
+            onPress={() => navigation.navigate('Alerts')}
           >
             <Text style={styles.cardIcon}>🔔</Text>
             <Text style={styles.cardTitle}>Alerts Feed</Text>

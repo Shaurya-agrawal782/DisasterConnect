@@ -89,6 +89,12 @@ export default function IncidentDetailScreen({ route, navigation }) {
             </View>
           </View>
 
+          {incident.ticketNumber && (
+            <Text style={styles.ticketText} selectable>
+              🎫 Ticket: {incident.ticketNumber}
+            </Text>
+          )}
+
           <Text style={styles.typeText}>Type: {getIncidentTypeLabel(incident.type)}</Text>
           <Text style={styles.dateText}>Reported: {formatDateTime(incident.createdAt)}</Text>
         </View>
@@ -293,6 +299,14 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 12,
     color: '#64748B',
+  },
+  ticketText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#60A5FA',
+    fontFamily: 'monospace',
+    marginBottom: 8,
+    letterSpacing: 0.3,
   },
   card: {
     backgroundColor: '#FFFFFF',

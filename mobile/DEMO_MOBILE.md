@@ -58,11 +58,18 @@ Use the following pre-configured credentials:
      * Tap **📍 Use Current Location** (location permission is required to submit the report).
      * Once captured, a read-only location card displays your Latitude, Longitude, GPS accuracy, and reverse-geocoded address.
      * Enter a human-readable note in **Landmark / Nearby Place \*** (e.g. `"Near Main Gate"`) to help responders find you.
-   * Tap **Submit Report**. You will be redirected to the **My Reports** history list.
+   * Tap **Submit Report**. You will see a **✅ Success banner** with your **Ticket Number** (e.g. `DC-20260613-48291`). Save this ticket — it lets you track your report publicly. After 4 seconds, you will be redirected to the **My Reports** history list.
 4. **Track Report & Timeline**:
+   * In **My Reports**, your ticket number appears on each report card in blue monospace text (🎫 DC-...).
+   * Use the **Search bar** at the top of My Reports to filter by ticket number or title.
    * Tap your newly created incident in the list.
+   * At the top of the detail screen, your ticket number is prominently displayed in blue.
    * Review the read-only dashboard detailing dispatched responders, resource counts, coordinates, and the chronological update timeline.
-5. **View Safety Updates**:
+5. **Public Track Report** (Web):
+   * On the Landing Page (`/`), click **Track Report** in the top nav.
+   * Enter your ticket number (e.g. `DC-20260613-48291`) in the search box.
+   * View the live response status progress bar, AI safety advisory (if available), and status history timeline.
+6. **View Safety Updates**:
    * Return to the Home dashboard and tap **Alerts Feed**.
    * Review targeted safety notices and incident broadcasts.
    * Tap **Mark read** on an unread alert (with the blue border and indicator dot). Watch the unread badge decrement on the home screen.

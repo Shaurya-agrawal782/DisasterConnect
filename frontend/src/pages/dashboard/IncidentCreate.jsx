@@ -85,6 +85,7 @@ export default function IncidentCreate() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [successTicket, setSuccessTicket] = useState(null);
 
   // Reverse Geocoding helper using OpenStreetMap Nominatim
   const reverseGeocode = async (lat, lng) => {
@@ -211,7 +212,10 @@ export default function IncidentCreate() {
 
       const res = await createIncident(payload);
       if (res.success) {
-        navigate('/dashboard/incidents');
+        const ticket = res.data?.incident?.ticketNumber || null;
+        setSuccessTicket(ticket);
+        // Scroll to top so user sees the success banner
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         setError(res.message || 'Failed to report incident.');
       }
@@ -243,11 +247,46 @@ export default function IncidentCreate() {
       <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 md:p-8 shadow-sm">
         <form onSubmit={handleSubmit} className="space-y-6">
           
-          {/* Error Message */}
+      {/* Error Message */}
           {error && (
             <div className="bg-error-container border border-error text-error p-4 rounded-xl text-sm flex items-start space-x-2.5">
               <span className="material-symbols-outlined text-error shrink-0">warning</span>
               <span className="text-on-error-container font-medium">{error}</span>
+            </div>
+          )}
+
+          {/* Success Banner with Ticket */}
+          {successTicket && (
+            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5 space-y-3 text-left">
+              <div className="flex items-center gap-2 text-emerald-800">
+                <span className="material-symbols-outlined text-emerald-600">check_circle</span>
+                <span className="font-bold text-base">Incident Reported Successfully!</span>
+              </div>
+              <p className="text-sm text-emerald-700">
+                Your incident has been submitted and is now in the command queue. Save your ticket number to track its status publicly.
+              </p>
+              <div className="bg-white border border-emerald-200 rounded-lg px-4 py-3 flex items-center justify-between gap-4 flex-wrap">
+                <div>
+                  <div className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-0.5">Your Ticket Number</div>
+                  <div className="font-mono text-xl font-extrabold text-emerald-800 select-all">{successTicket}</div>
+                </div>
+                <div className="flex gap-2 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={() => navigator.clipboard?.writeText(successTicket)}
+                    className="px-3 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 rounded text-xs font-bold transition flex items-center gap-1"
+                  >
+                    <span className="material-symbols-outlined text-[14px]">content_copy</span> Copy
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => navigate('/dashboard/incidents')}
+                    className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs font-bold transition"
+                  >
+                    Go to My Reports
+                  </button>
+                </div>
+              </div>
             </div>
           )}
 

@@ -9,6 +9,7 @@
     "seed:users": "node src/scripts/seedUsers.js",
     "seed:resources": "node src/scripts/seedResources.js",
     "seed:demo": "node src/scripts/seedDemoData.js",
+    "backfill:tickets": "node src/scripts/backfillTicketNumbers.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

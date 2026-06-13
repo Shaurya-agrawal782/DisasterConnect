@@ -112,6 +112,7 @@ export default function ReportIncidentScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [successTicket, setSuccessTicket] = useState('');
 
   const handleUseCurrentLocation = async () => {
     setLocationLoading(true);
@@ -225,6 +226,8 @@ export default function ReportIncidentScreen({ navigation }) {
 
       const res = await createIncident(payload);
       if (res.success) {
+        const ticket = res.data?.incident?.ticketNumber || '';
+        setSuccessTicket(ticket);
         setSuccess('Incident reported successfully!');
         setTitle('');
         setDescription('');
@@ -236,7 +239,7 @@ export default function ReportIncidentScreen({ navigation }) {
 
         setTimeout(() => {
           navigation.navigate('MyReports');
-        }, 1500);
+        }, 4000);
       } else {
         setError(res.message || 'Failed to submit incident.');
       }
@@ -267,7 +270,14 @@ export default function ReportIncidentScreen({ navigation }) {
 
             {success ? (
               <View style={styles.successBox}>
-                <Text style={styles.successText}>{success}</Text>
+                <Text style={styles.successText}>✅ {success}</Text>
+                {successTicket ? (
+                  <>
+                    <Text style={styles.ticketLabel}>Your Ticket Number</Text>
+                    <Text style={styles.ticketValue} selectable>{successTicket}</Text>
+                    <Text style={styles.ticketHint}>Save this to track your report status. Redirecting to My Reports...</Text>
+                  </>
+                ) : null}
               </View>
             ) : null}
 
@@ -639,7 +649,31 @@ const styles = StyleSheet.create({
   successText: {
     color: '#065F46',
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  ticketLabel: {
+    color: '#047857',
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+    marginTop: 6,
+    marginBottom: 2,
+  },
+  ticketValue: {
+    color: '#064E3B',
+    fontSize: 20,
+    fontWeight: '800',
+    fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
+    marginBottom: 4,
+    letterSpacing: 0.5,
+  },
+  ticketHint: {
+    color: '#065F46',
+    fontSize: 11,
+    fontStyle: 'italic',
+    marginTop: 2,
   },
   inputGroup: {
     marginBottom: 16,

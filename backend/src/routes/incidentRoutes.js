@@ -9,12 +9,16 @@ const {
   deleteIncident,
   assignResourceToIncident,
   releaseResourceFromIncident,
-  regenerateAiTriage
+  regenerateAiTriage,
+  getIncidentByTicket
 } = require('../controllers/incidentController');
 const { protect } = require('../middleware/authMiddleware');
 const { authorizeRoles } = require('../middleware/roleMiddleware');
 
 const router = express.Router();
+
+// Public route to track report status by ticket
+router.get('/track/:ticketNumber', getIncidentByTicket);
 
 // General protected routes
 router.post('/', protect, authorizeRoles('admin', 'citizen'), createIncident);

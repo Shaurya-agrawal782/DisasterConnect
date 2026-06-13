@@ -7,6 +7,7 @@ import RoleRoute from './routes/RoleRoute';
 import DashboardLayout from './components/layout/DashboardLayout';
 
 import Landing from './pages/public/Landing';
+import TrackReport from './pages/TrackReport';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 
@@ -54,6 +55,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Landing />} />
+          <Route path="/track-report" element={<TrackReport />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 

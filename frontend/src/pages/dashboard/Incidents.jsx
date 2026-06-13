@@ -178,7 +178,7 @@ export default function Incidents() {
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
           <input 
             className="w-full pl-10 pr-4 py-2 bg-surface border border-outline-variant rounded text-on-surface font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 transition-all placeholder:text-outline" 
-            placeholder="Search by Keyword..." 
+            placeholder="Search by ticket, title, type, or location..." 
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -293,6 +293,7 @@ export default function Incidents() {
                 <thead>
                   <tr className="bg-surface-container-low border-b border-outline-variant">
                     <th className="px-4 py-3 font-label-md text-label-md text-on-surface-variant whitespace-nowrap">Title</th>
+                    <th className="px-4 py-3 font-label-md text-label-md text-on-surface-variant whitespace-nowrap w-36 font-mono">TICKET</th>
                     <th className="px-4 py-3 font-label-md text-label-md text-on-surface-variant whitespace-nowrap w-24">PRIORITY</th>
                     <th className="px-4 py-3 font-label-md text-label-md text-on-surface-variant whitespace-nowrap w-36">CATEGORY</th>
                     <th className="px-4 py-3 font-label-md text-label-md text-on-surface-variant whitespace-nowrap">LOCATION</th>
@@ -310,6 +311,15 @@ export default function Incidents() {
                       <td className="px-4 py-2 font-semibold">
                         <div className="font-semibold text-on-surface truncate text-sm max-w-xs">{incident.title}</div>
                         <div className="text-xs text-on-surface-variant truncate max-w-xs mt-0.5 font-normal">{incident.description}</div>
+                      </td>
+                      <td className="px-4 py-2">
+                        {incident.ticketNumber ? (
+                          <span className="font-mono text-[11px] font-bold text-primary bg-primary/8 border border-primary/20 px-1.5 py-0.5 rounded select-all">
+                            {incident.ticketNumber}
+                          </span>
+                        ) : (
+                          <span className="text-xs text-on-surface-variant/40 italic">—</span>
+                        )}
                       </td>
                       <td className="px-4 py-2">
                         {getSeverityBadge(incident.severity)}

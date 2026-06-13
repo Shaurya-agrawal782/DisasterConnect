@@ -45,6 +45,7 @@ In critical event crowds, crowd density transitions to crowd hazard in seconds. 
 - **Gemini AI Triage Assistant:** Advisory decision-support parsing incident context to generate risk scores, priority recommendations, and safety checklists.
 - **AI Report Assistant:** Pre-submit natural language incident draft helper classifying incident type/severity and suggesting safety tips. Built backend-only to preserve Gemini key security.
 - **Incident Geolocation Lock:** Citizen incident reports enforce device GPS/browser geolocation with manual coordinates inputs disabled to prevent spoofing. Human-readable context is collected via landmark inputs.
+- **Incident Ticket Tracking:** Every incident is assigned a unique human-readable ticket number (`DC-YYYYMMDD-XXXXX`). Citizens see their ticket on the submission success screen, on report cards, and in detail views. A public `/track-report` page allows anyone to check incident status, safety notes, and status timeline using only a ticket number — without exposing reporter identity, GPS coordinates, or internal notes.
 
 ---
 

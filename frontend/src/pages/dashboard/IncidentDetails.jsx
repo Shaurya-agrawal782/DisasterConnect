@@ -324,7 +324,18 @@ export default function IncidentDetails() {
               {getSeverityBadge(incident.severity)}
               {getStatusBadge(incident.status)}
             </div>
-            <p className="font-label-sm text-label-sm text-on-surface-variant mt-1">Incident ID: {incident._id}</p>
+            <div className="flex flex-wrap items-center gap-4 mt-1.5">
+              {incident.ticketNumber && (
+                <span
+                  className="inline-flex items-center gap-1.5 font-mono text-xs font-bold text-primary bg-primary/8 border border-primary/20 px-2.5 py-1 rounded select-all cursor-copy"
+                  title="Copy ticket number"
+                >
+                  <span className="material-symbols-outlined text-[14px]">confirmation_number</span>
+                  {incident.ticketNumber}
+                </span>
+              )}
+              <p className="font-label-sm text-label-sm text-on-surface-variant">ID: {incident._id}</p>
+            </div>
           </div>
         </div>
 

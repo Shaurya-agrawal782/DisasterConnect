@@ -7,6 +7,7 @@ const asyncHandler = require('../utils/asyncHandler');
 const createAlertAndEmit = require('../utils/createAlert');
 const env = require('../config/env');
 const geminiTriageService = require('../services/geminiTriageService');
+const generateTicketNumber = require('../utils/generateTicketNumber');
 
 // Helper to validate status transitions
 const isValidTransition = (current, target) => {
@@ -47,8 +48,26 @@ const createIncident = asyncHandler(async (req, res, next) => {
     return next(new AppError(400, 'Location coordinates must be numeric values.'));
   }
 
+  // Generate a unique ticket number
+  let ticketNumber;
+  let isUnique = false;
+  let retries = 0;
+  while (!isUnique && retries < 5) {
+    ticketNumber = generateTicketNumber();
+    const existing = await Incident.findOne({ ticketNumber });
+    if (!existing) {
+      isUnique = true;
+    }
+    retries++;
+  }
+
+  if (!isUnique) {
+    return next(new AppError(500, 'Could not generate a unique ticket number. Please try again.'));
+  }
+
   // Create incident
   let incident = await Incident.create({
+    ticketNumber,
     title,
     description,
     type,
@@ -121,8 +140,11 @@ const getIncidents = asyncHandler(async (req, res, next) => {
   if (search) {
     searchQuery = {
       $or: [
+        { ticketNumber: { $regex: search, $options: 'i' } },
         { title: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } }
+        { description: { $regex: search, $options: 'i' } },
+        { type: { $regex: search, $options: 'i' } },
+        { 'location.address': { $regex: search, $options: 'i' } }
       ]
     };
   }
@@ -629,6 +651,49 @@ const regenerateAiTriage = asyncHandler(async (req, res, next) => {
   );
 });
 
+// @desc    Track incident status publicly by ticket number (safe/limited fields only)
+// @route   GET /api/incidents/track/:ticketNumber
+// @access  Public
+const getIncidentByTicket = asyncHandler(async (req, res, next) => {
+  const { ticketNumber } = req.params;
+
+  if (!ticketNumber) {
+    return next(new AppError(400, 'Please provide a ticket number.'));
+  }
+
+  const incident = await Incident.findOne({ ticketNumber });
+
+  if (!incident) {
+    return res.status(404).json({
+      success: false,
+      message: 'No report found for this ticket number.'
+    });
+  }
+
+  // Safe subset of incident properties (privacy protection)
+  const safeData = {
+    ticketNumber: incident.ticketNumber,
+    title: incident.title,
+    type: incident.type,
+    severity: incident.severity,
+    status: incident.status,
+    address: incident.location?.address || '',
+    createdAt: incident.createdAt,
+    updatedAt: incident.updatedAt,
+    aiSafetyNote: incident.aiTriage?.citizenSafetyNote || null,
+    publicTimeline: (incident.statusHistory || []).map(h => ({
+      status: h.status,
+      note: h.note || '',
+      changedAt: h.changedAt
+    }))
+  };
+
+  return res.status(200).json({
+    success: true,
+    data: safeData
+  });
+});
+
 module.exports = {
   createIncident,
   getIncidents,
@@ -640,5 +705,6 @@ module.exports = {
   assignResourceToIncident,
   releaseResourceFromIncident,
   releaseAllResourcesForIncident,
-  regenerateAiTriage
+  regenerateAiTriage,
+  getIncidentByTicket
 };

@@ -4,6 +4,7 @@ import {
   View,
   Text,
   FlatList,
+  TextInput,
   TouchableOpacity,
   ActivityIndicator,
   RefreshControl,
@@ -18,6 +19,7 @@ export default function MyReportsScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
+  const [ticketSearch, setTicketSearch] = useState('');
 
   const fetchReports = useCallback(async (showIndicator = true) => {
     if (showIndicator) setLoading(true);
@@ -74,6 +76,10 @@ export default function MyReportsScreen({ navigation }) {
           </View>
         </View>
 
+        {item.ticketNumber && (
+          <Text style={styles.ticketText} selectable>🎫 {item.ticketNumber}</Text>
+        )}
+
         <View style={styles.cardMetaRow}>
           <Text style={styles.typeText}>{getIncidentTypeLabel(item.type)}</Text>
           <View style={[styles.statusBadge, { backgroundColor: statusStyle.bg, borderColor: statusStyle.border }]}>
@@ -108,37 +114,65 @@ export default function MyReportsScreen({ navigation }) {
     );
   }
 
+  const searchLower = ticketSearch.trim().toLowerCase();
+  const filteredReports = searchLower
+    ? reports.filter(r =>
+        (r.ticketNumber && r.ticketNumber.toLowerCase().includes(searchLower)) ||
+        (r.title && r.title.toLowerCase().includes(searchLower))
+      )
+    : reports;
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <FlatList
-        data={reports}
+        data={filteredReports}
         keyExtractor={(item) => item._id}
         renderItem={renderReportItem}
         contentContainerStyle={styles.listContainer}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} colors={['#2563EB']} />
         }
+        ListHeaderComponent={
+          <>
+            {/* Ticket Search Bar */}
+            <View style={styles.searchContainer}>
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Search by ticket number or title..."
+                placeholderTextColor="#94A3B8"
+                value={ticketSearch}
+                onChangeText={setTicketSearch}
+                autoCapitalize="characters"
+                autoCorrect={false}
+              />
+            </View>
+            {error ? (
+              <View style={styles.errorBox}>
+                <Text style={styles.errorText}>{error}</Text>
+              </View>
+            ) : null}
+          </>
+        }
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyIcon}>📁</Text>
-            <Text style={styles.emptyTitle}>No reports yet</Text>
-            <Text style={styles.emptyDesc}>
-              Submit an incident to notify the command and emergency response team.
+            <Text style={styles.emptyTitle}>
+              {ticketSearch ? 'No matching reports' : 'No reports yet'}
             </Text>
-            <TouchableOpacity
-              style={styles.emptyBtn}
-              onPress={() => navigation.navigate('ReportIncident')}
-            >
-              <Text style={styles.emptyBtnText}>Report Incident Now</Text>
-            </TouchableOpacity>
+            <Text style={styles.emptyDesc}>
+              {ticketSearch
+                ? 'Try a different ticket number or title search.'
+                : 'Submit an incident to notify the command and emergency response team.'}
+            </Text>
+            {!ticketSearch && (
+              <TouchableOpacity
+                style={styles.emptyBtn}
+                onPress={() => navigation.navigate('ReportIncident')}
+              >
+                <Text style={styles.emptyBtnText}>Report Incident Now</Text>
+              </TouchableOpacity>
+            )}
           </View>
-        }
-        ListHeaderComponent={
-          error ? (
-            <View style={styles.errorBox}>
-              <Text style={styles.errorText}>{error}</Text>
-            </View>
-          ) : null
         }
       />
     </SafeAreaView>
@@ -262,6 +296,30 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#94A3B8',
     fontWeight: '500',
+  },
+  ticketText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#2563EB',
+    fontFamily: 'monospace',
+    marginBottom: 8,
+    letterSpacing: 0.3,
+  },
+  searchContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    marginBottom: 12,
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  searchInput: {
+    flex: 1,
+    height: 44,
+    fontSize: 14,
+    color: '#0F172A',
   },
   emptyContainer: {
     flex: 1,

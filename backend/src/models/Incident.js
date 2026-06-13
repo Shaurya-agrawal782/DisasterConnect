@@ -21,6 +21,12 @@ const statusHistorySchema = new mongoose.Schema({
 
 const incidentSchema = new mongoose.Schema(
   {
+    ticketNumber: {
+      type: String,
+      unique: true,
+      index: true,
+      immutable: true
+    },
     title: {
       type: String,
       required: [true, 'Please provide a title'],

@@ -36,6 +36,12 @@ export default function Landing() {
         </div>
         <div className="flex items-center gap-4">
           <Link
+            to="/track-report"
+            className="text-slate-300 hover:text-white text-xs font-semibold transition-colors"
+          >
+            Track Report
+          </Link>
+          <Link
             to="/login"
             className="text-slate-300 hover:text-white text-xs font-semibold transition-colors"
           >

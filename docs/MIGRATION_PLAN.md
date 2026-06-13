@@ -59,6 +59,7 @@
 - **Step 60 completed**: AI Report Assistant added: pre-submit Gemini-powered report classification, severity suggestion, description improvement, missing-question prompts, and citizen safety tips.
 - **Step 61 completed**: Incident report location UX updated: citizen reports now require current GPS capture, hide manual coordinate editing, and use landmark notes for human-readable context.
 - **Step 62 completed**: Incident ticket tracking added: every new incident gets a unique human-readable ticket number (format: `DC-YYYYMMDD-XXXXX`) generated with cryptographic randomness. A public `/api/incidents/track/:ticketNumber` endpoint returns safe, privacy-filtered status data. Web and mobile UIs show ticket numbers prominently on creation success banners, detail views, and listing tables. A public `/track-report` page allows citizens to track any report by ticket. A backfill script handles legacy incidents.
+- **Step 63 completed**: Admin Responder Management added: admins can create, view, activate/deactivate, and safely delete responder accounts while public registration remains citizen-only.
 
 ## Next Steps
 - Seed demo data on production MongoDB Atlas (`npm run seed:users && npm run seed:demo`).

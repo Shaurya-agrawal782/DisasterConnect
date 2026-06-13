@@ -64,7 +64,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
 
   // Reject inactive users
   if (!user.isActive) {
-    return next(new AppError(403, 'Account has been deactivated. Please contact support.'));
+    return next(new AppError(403, 'This account has been deactivated. Please contact the command admin.'));
   }
 
   // Verify candidate password match

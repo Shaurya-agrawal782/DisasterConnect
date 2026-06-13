@@ -46,6 +46,7 @@ In critical event crowds, crowd density transitions to crowd hazard in seconds. 
 - **AI Report Assistant:** Pre-submit natural language incident draft helper classifying incident type/severity and suggesting safety tips. Built backend-only to preserve Gemini key security.
 - **Incident Geolocation Lock:** Citizen incident reports enforce device GPS/browser geolocation with manual coordinates inputs disabled to prevent spoofing. Human-readable context is collected via landmark inputs.
 - **Incident Ticket Tracking:** Every incident is assigned a unique human-readable ticket number (`DC-YYYYMMDD-XXXXX`). Citizens see their ticket on the submission success screen, on report cards, and in detail views. A public `/track-report` page allows anyone to check incident status, safety notes, and status timeline using only a ticket number — without exposing reporter identity, GPS coordinates, or internal notes.
+- **Admin Responder Management:** Admins can provision responder accounts, view a directory of all responders (active and inactive), toggle account status (deactivate/activate), and safely delete responder accounts (blocked if they have active incidents). Public registration remains citizen-only.
 
 ---
 
@@ -53,9 +54,9 @@ In critical event crowds, crowd density transitions to crowd hazard in seconds. 
 
 | Role | Permissions / Responsibilities |
 | :--- | :--- |
-| **Admin** | Full system read/write. Verifies citizen reports, assigns responders, coordinates resource dispatch, and analyzes dashboard metrics. |
+| **Admin** | Full system read/write. Verifies citizen reports, assigns responders, coordinates resource dispatch, provisions/manages responder accounts, and analyzes dashboard metrics. |
 | **Responder** | Receives assigned incidents, updates response statuses in real-time, views leaflet map, and checks system alert feeds. |
-| **Citizen** | Registers publicly. Submits new incident reports, tracks personal incident status history, and receives global safety alert broadcasts. |
+| **Citizen** | Registers publicly. Public registration is restricted to citizen role only. Submits new incident reports, tracks personal incident status history, and receives global safety alert broadcasts. |
 
 ---
 

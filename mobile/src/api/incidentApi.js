@@ -9,3 +9,8 @@ export const getIncidents = async (params) => {
   const response = await client.get('/incidents', { params });
   return response.data;
 };
+
+export const getIncidentById = async (id) => {
+  const response = await client.get(`/incidents/${id}`);
+  return response.data;
+};

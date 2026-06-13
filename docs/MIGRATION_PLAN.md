@@ -51,6 +51,7 @@
 - **Deployment auth persistence fixed: HttpOnly cookie auth retained with sessionStorage Bearer fallback for Vercel + Render cross-origin deployment. Login response now returns JWT for Bearer use; axios interceptor attaches it on every request; Socket.io handshake passes auth.token; logout clears sessionStorage token.**
 - **Mobile Phase 1 completed: Expo React Native foundation added with backend authentication and role-based mobile home screens.**
 - **Mobile Phase 2 completed: Citizen incident reporting added with Expo location GPS capture, manual coordinate fallback, and backend incident creation.**
+- **Mobile Phase 3 completed: Citizen My Reports list and read-only incident detail tracking added.**
 
 ## Next Steps
 - Seed demo data on production MongoDB Atlas (`npm run seed:users && npm run seed:demo`).

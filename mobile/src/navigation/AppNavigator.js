@@ -9,7 +9,8 @@ import LoadingScreen from '../screens/common/LoadingScreen';
 import AlertsPlaceholderScreen from '../screens/common/AlertsPlaceholderScreen';
 import CitizenHomeScreen from '../screens/citizen/CitizenHomeScreen';
 import ReportIncidentScreen from '../screens/citizen/ReportIncidentScreen';
-import MyReportsPlaceholderScreen from '../screens/citizen/MyReportsPlaceholderScreen';
+import MyReportsScreen from '../screens/citizen/MyReportsScreen';
+import IncidentDetailScreen from '../screens/citizen/IncidentDetailScreen';
 import ResponderHomeScreen from '../screens/responder/ResponderHomeScreen';
 import AssignedIncidentsPlaceholderScreen from '../screens/responder/AssignedIncidentsPlaceholderScreen';
 import AdminMobileNoticeScreen from '../screens/admin/AdminMobileNoticeScreen';
@@ -66,8 +67,13 @@ export default function AppNavigator() {
               />
               <Stack.Screen 
                 name="MyReports" 
-                component={MyReportsPlaceholderScreen} 
+                component={MyReportsScreen} 
                 options={{ title: 'My Incident Reports' }}
+              />
+              <Stack.Screen 
+                name="IncidentDetail" 
+                component={IncidentDetailScreen} 
+                options={{ title: 'Incident Detail' }}
               />
               <Stack.Screen 
                 name="Alerts" 

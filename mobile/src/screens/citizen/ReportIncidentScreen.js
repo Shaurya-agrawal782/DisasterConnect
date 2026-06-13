@@ -163,7 +163,7 @@ export default function ReportIncidentScreen({ navigation }) {
         setAccuracy(null);
 
         setTimeout(() => {
-          navigation.navigate('CitizenHome');
+          navigation.navigate('MyReports');
         }, 1500);
       } else {
         setError(res.message || 'Failed to submit incident.');

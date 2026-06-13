@@ -2,12 +2,13 @@
 
 This is the Expo React Native mobile client for **DisasterConnect**, designed to coordinate emergency response workflows for Citizens and Field Responders.
 
-## Current Scope (Phase 2)
+## Current Scope (Phase 3)
 - **Expo React Native Foundation**: Bootstrapped with JavaScript and React Navigation.
 - **Backend Authentication Integration**: Implemented JWT Bearer token authorization using the existing backend endpoints.
 - **Secure Session Persistence**: Local token storage using `@react-native-async-storage/async-storage`.
 - **Role-Based Routing**: Auto-routes to dedicated layouts based on credentials (`citizen`, `responder`, `admin`).
 - **GPS Incident Reporting**: Captures coordinates using `expo-location`, supports Nominatim reverse geocoding for automated address filling, and integrates manual fallback overrides.
+- **Incident List & Detail Tracking**: Citizens can list their reported incidents (with RefreshControl) and view read-only detail dashboards mapping coordinates, assigned responders, dispatched resource units, and chronological status timelines.
 
 ## Tech Stack
 - Expo React Native
@@ -59,6 +60,6 @@ Use these pre-configured accounts to verify authentication and role-based views:
 ## Development Roadmap
 - **Phase 1 (Completed)**: Mobile foundation, authentication, and role-based home screens.
 - **Phase 2 (Completed)**: Citizen incident reporting with GPS/location coordinates.
-- **Phase 3**: My Incident Reports list & detail views.
+- **Phase 3 (Completed)**: My Incident Reports list & detail views.
 - **Phase 4**: Responder assigned incidents mapping & status updates (auto-release resources).
 - **Phase 5**: Real-time Socket.io safety alerts & notifications.

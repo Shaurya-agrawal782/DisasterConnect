@@ -108,6 +108,7 @@ export default function AdminDashboard({ data, user, fetchDashboardData }) {
     .slice(0, 3);
   
   const activeGroups = groups.filter(g => g.status === 'active');
+  const topActiveGroups = activeGroups.slice(0, 3);
   const recentAlerts = alertStats?.recentAlerts || [];
 
   // Calculate dynamic bounding box for SVG plotting

@@ -111,13 +111,35 @@ export default function IncidentDetailScreen({ route, navigation }) {
               </View>
             </View>
             <Text style={styles.groupCardText}>
-              This report is grouped with nearby similar reports for faster response.
+              This report is grouped with nearby similar reports so the command team can resolve duplicate reports faster.
             </Text>
-            {incident.incidentGroup.status && (
-              <Text style={styles.groupStatusText}>
-                Group Status: <Text style={{ fontWeight: 'bold' }}>{incident.incidentGroup.status.toUpperCase()}</Text>
-              </Text>
-            )}
+            <View style={{ marginTop: 6, gap: 4 }}>
+              {incident.incidentGroup.status && (
+                <Text style={styles.groupStatusText}>
+                  Group Status: <Text style={{ fontWeight: 'bold' }}>{incident.incidentGroup.status.toUpperCase()}</Text>
+                </Text>
+              )}
+              {incident.incidentGroup.incidentCount !== undefined && (
+                <Text style={styles.groupStatusText}>
+                  Similar Reports Count: <Text style={{ fontWeight: 'bold' }}>{incident.incidentGroup.incidentCount}</Text>
+                </Text>
+              )}
+              {incident.incidentGroup.locationSummary ? (
+                <Text style={styles.groupStatusText}>
+                  Location Summary: <Text style={{ fontWeight: 'bold' }}>{incident.incidentGroup.locationSummary}</Text>
+                </Text>
+              ) : null}
+              {incident.incidentGroup.resolvedAt ? (
+                <Text style={styles.groupStatusText}>
+                  Resolved At: <Text style={{ fontWeight: 'bold' }}>{formatDateTime(incident.incidentGroup.resolvedAt)}</Text>
+                </Text>
+              ) : null}
+              {incident.incidentGroup.resolutionNote ? (
+                <Text style={[styles.groupStatusText, { fontStyle: 'italic', marginTop: 4, padding: 8, backgroundColor: '#E0F2FE', borderRadius: 4 }]}>
+                  Resolution Note: {incident.incidentGroup.resolutionNote}
+                </Text>
+              ) : null}
+            </View>
           </View>
         ) : null}
 

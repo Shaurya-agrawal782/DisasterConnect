@@ -7,6 +7,7 @@ import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 import LoadingScreen from '../screens/common/LoadingScreen';
 import AlertsScreen from '../screens/common/AlertsScreen';
+import TrackReportScreen from '../screens/common/TrackReportScreen';
 import CitizenHomeScreen from '../screens/citizen/CitizenHomeScreen';
 import ReportIncidentScreen from '../screens/citizen/ReportIncidentScreen';
 import MyReportsScreen from '../screens/citizen/MyReportsScreen';
@@ -14,6 +15,7 @@ import IncidentDetailScreen from '../screens/citizen/IncidentDetailScreen';
 import ResponderHomeScreen from '../screens/responder/ResponderHomeScreen';
 import AssignedIncidentsScreen from '../screens/responder/AssignedIncidentsScreen';
 import ResponderIncidentDetailScreen from '../screens/responder/ResponderIncidentDetailScreen';
+import ResponderProfileScreen from '../screens/responder/ResponderProfileScreen';
 import AdminMobileNoticeScreen from '../screens/admin/AdminMobileNoticeScreen';
 
 const Stack = createNativeStackNavigator();
@@ -50,6 +52,11 @@ export default function AppNavigator() {
             component={RegisterScreen} 
             options={{ title: 'Create Account', headerShown: false }}
           />
+          <Stack.Screen 
+            name="TrackReport" 
+            component={TrackReportScreen} 
+            options={{ title: 'Track Report' }}
+          />
         </>
       ) : (
         // Authenticated flow based on roles
@@ -81,6 +88,11 @@ export default function AppNavigator() {
                 component={AlertsScreen} 
                 options={{ title: 'Notifications & Alerts' }}
               />
+              <Stack.Screen 
+                name="TrackReport" 
+                component={TrackReportScreen} 
+                options={{ title: 'Track Report' }}
+              />
             </>
           )}
 
@@ -106,6 +118,11 @@ export default function AppNavigator() {
                 component={AlertsScreen} 
                 options={{ title: 'Notifications & Alerts' }}
               />
+              <Stack.Screen 
+                name="ResponderProfile" 
+                component={ResponderProfileScreen} 
+                options={{ title: 'My Profile' }}
+              />
             </>
           )}
 
@@ -121,3 +138,4 @@ export default function AppNavigator() {
     </Stack.Navigator>
   );
 }
+

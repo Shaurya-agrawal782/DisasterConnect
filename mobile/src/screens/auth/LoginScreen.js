@@ -105,6 +105,12 @@ export default function LoginScreen({ navigation }) {
                 <Text style={styles.linkText}>Register here</Text>
               </TouchableOpacity>
             </View>
+
+            <View style={[styles.footer, { marginTop: 16 }]}>
+              <TouchableOpacity onPress={() => navigation.navigate('TrackReport')}>
+                <Text style={styles.trackLinkText}>Track Report by Ticket</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -220,5 +226,11 @@ const styles = StyleSheet.create({
     color: '#60A5FA',
     fontSize: 14,
     fontWeight: '600',
+  },
+  trackLinkText: {
+    color: '#38BDF8',
+    fontSize: 14,
+    fontWeight: '600',
+    textDecorationLine: 'underline',
   },
 });

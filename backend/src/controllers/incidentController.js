@@ -202,7 +202,7 @@ const getIncidentById = asyncHandler(async (req, res, next) => {
   const incident = await Incident.findById(req.params.id)
     .populate('reportedBy', 'name email')
     .populate('assignedResponder', 'name email')
-    .populate('incidentGroup', 'groupNumber status incidentCount')
+    .populate('incidentGroup', 'groupNumber status incidentCount locationSummary severitySummary resolutionNote resolvedAt')
     .populate('assignedResources', 'name type status capacity currentLocation.address');
 
   if (!incident) {

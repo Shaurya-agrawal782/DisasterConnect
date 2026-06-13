@@ -62,7 +62,8 @@
 - **Step 63 completed**: Admin Responder Management added: admins can create, view, activate/deactivate, and safely delete responder accounts while public registration remains citizen-only.
 - **Step 64 completed**: Responder safety profiles added: admin-managed responder ID, department, specialization, service zone, verification status, and emergency contact details.
 - **Step 65 completed**: Smart Incident Grouping added: nearby same-type reports within a 3-hour window are grouped for admin review, and resolving a group updates and notifies all linked citizen reports.
+- **Step 66 completed**: Mobile Feature Parity Pass: Integrated AI Report Assistant, public ticket tracking, smart grouping status indicators, read-only responder profile console, and enhanced safety alerts formatting.
 
 ## Next Steps
-- Seed demo data on production MongoDB Atlas (`npm run seed:users && npm run seed:demo`).
+- Run backfill for existing incidents without groups: `cd backend && npm run backfill:groups`.
 - Run backfill for existing incidents without ticket numbers: `cd backend && npm run backfill:tickets`.

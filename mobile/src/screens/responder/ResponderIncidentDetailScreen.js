@@ -184,7 +184,7 @@ export default function ResponderIncidentDetailScreen({ route, navigation }) {
           {incident.incidentGroup ? (
             <View style={[styles.card, styles.groupCard]}>
               <View style={styles.groupCardHeader}>
-                <Text style={styles.groupCardHeaderTitle}>📁 Grouped Incident Case</Text>
+                <Text style={styles.groupCardHeaderTitle}>📁 Grouped Incident Context</Text>
                 <View style={[styles.miniBadge, { backgroundColor: '#EFF6FF', borderColor: '#3B82F6' }]}>
                   <Text style={{ fontSize: 9, fontWeight: '800', color: '#1E40AF' }}>
                     {incident.incidentGroup.groupNumber}
@@ -194,11 +194,31 @@ export default function ResponderIncidentDetailScreen({ route, navigation }) {
               <Text style={styles.groupCardText}>
                 This report is grouped under a consolidated event. Multiple citizen tickets refer to this incident context.
               </Text>
-              {incident.incidentGroup.incidentCount !== undefined && (
-                <Text style={styles.groupStatusText}>
-                  Linked Reports Count: <Text style={{ fontWeight: 'bold' }}>{incident.incidentGroup.incidentCount}</Text>
+              <View style={{ marginTop: 6, gap: 4 }}>
+                {incident.incidentGroup.status && (
+                  <Text style={styles.groupStatusText}>
+                    Group Status: <Text style={{ fontWeight: 'bold' }}>{incident.incidentGroup.status.toUpperCase()}</Text>
+                  </Text>
+                )}
+                {incident.incidentGroup.incidentCount !== undefined && (
+                  <Text style={styles.groupStatusText}>
+                    Linked Reports Count: <Text style={{ fontWeight: 'bold' }}>{incident.incidentGroup.incidentCount}</Text>
+                  </Text>
+                )}
+                {incident.incidentGroup.severitySummary ? (
+                  <Text style={styles.groupStatusText}>
+                    Severity Summary: <Text style={{ fontWeight: 'bold' }}>{incident.incidentGroup.severitySummary.toUpperCase()}</Text>
+                  </Text>
+                ) : null}
+                {incident.incidentGroup.locationSummary ? (
+                  <Text style={styles.groupStatusText}>
+                    Location Summary: <Text style={{ fontWeight: 'bold' }}>{incident.incidentGroup.locationSummary}</Text>
+                  </Text>
+                ) : null}
+                <Text style={[styles.groupStatusText, { fontStyle: 'italic', color: '#B45309', marginTop: 4 }]}>
+                  ⚠️ Note: Multiple reports may refer to the same issue. Follow command instructions before resolving.
                 </Text>
-              )}
+              </View>
             </View>
           ) : null}
 

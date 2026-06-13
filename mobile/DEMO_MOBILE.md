@@ -75,19 +75,34 @@ Use the following pre-configured credentials:
    * Tap **Mark read** on an unread alert (with the blue border and indicator dot). Watch the unread badge decrement on the home screen.
    * Tap **Mark all read** to read all alerts at once.
 
-### 2. Field Responder Workflow (Dispatches & Action Console)
+### 2. Public Ticket Tracking Workflow (Unauthenticated)
+1. **Access Tracker**: From the Login screen, tap the **Track Report by Ticket** link at the bottom.
+2. **Search Ticket**: Enter any valid incident ticket number (e.g., `DC-20260613-72774`) and tap **Search Status**.
+3. **Review Safe Details**: Check status, category, severity, reported/updated timestamps, reverse-geocoded address/landmark, and the AI Citizen Safety Note.
+4. **Privacy Protection**: Notice that exact GPS coordinates, dispatcher identity, and reporter details are **never** exposed publicly.
+5. **Group Case Message**: If the report is grouped with adjacent duplicate incidents, review the **Linked Group Case** block conveying safety details: *"This report is linked to a grouped incident being handled by the command team."*
+
+### 3. Field Responder Workflow (Dispatches & Action Console)
 1. **Sign In**: Login as the Responder account.
 2. **Active Dispatches**: Tap **My Assigned Incidents** to review incidents currently scoped to your responder account.
-3. **Action Console**:
+3. **Grouped Card Badge**: If an incident is linked to a cluster group, notice the **📁 GROUPED** badge on the list card.
+4. **Action Console**:
    * Open an incident card to view details (descriptions, geographical coordinates, dispatched resources).
+   * **Grouped Incident Context**: If grouped, review the warning context showing the group number, linked reports count, severity summary, location summary, and safety guidelines: *"Multiple reports may refer to the same issue. Follow command instructions before resolving."*
    * Scroll to the **Field Action Console**.
    * Select a valid next status (e.g. `in-progress` or `resolved`).
    * Enter an optional field log note.
    * Tap **Update Dispatch Status**. The timeline updates immediately, and any dispatched resources are automatically freed back into the global inventory pool.
-4. **Emergency Alerts Feed**:
+5. **Emergency Alerts Feed**:
    * Tap **Emergency Alerts Feed** on the Home screen to view responder-targeted dispatches and safety bulletins.
+   * **Highlighted Messages**: Group resolution notifications will highlight ticket numbers (e.g. `DC-...`) and group codes (e.g. `GRP-...`) in bold blue text.
 
-### 3. Admin Redirect Notice
+### 4. Responder Profile View
+1. **Access Profile**: Tap the **My Responder Profile** card on the Field Responder Home screen.
+2. **Read-Only Inspection**: Inspect shift parameters, specialization, department, badge ID, emergency contacts, active state, and verification status.
+3. **Administrative Notice**: Note the warning banner: *"Responder profiles are managed by command admins."* Profile parameters cannot be edited from mobile.
+
+### 5. Admin Redirect Notice
 1. **Sign In**: Login as the Admin account.
 2. **Warning Redirect**: View the prompt screen advising admins to access the control panel via desktop web browser.
 3. **Sign Out**: Tap **Sign Out & Switch Accounts** to return to the login screen.
@@ -103,7 +118,7 @@ Use the following pre-configured credentials:
 
 ### 📍 Location Permission Denied
 * **Problem**: Tapping "Use Current Location" prompts a warning or fails to obtain coordinates.
-* **Fix**: Allow location permissions in Expo Go app settings or manually type latitude (e.g. `23.2599`) and longitude (e.g. `77.4126`) in the coordinate input fields.
+* **Fix**: Allow location permissions in Expo Go app settings. GPS coordinates are locked for authentication security; manual coordinate fields are removed.
 
 ### 📶 Expo Go Network / Bundler Issue
 * **Problem**: Scanning the QR code displays "Network connection timeout" or "Could not connect to development server".
@@ -115,4 +130,4 @@ Use the following pre-configured credentials:
 ### 🛰️ Android Location Accuracy
 * **Problem**: Caught coordinates are imprecise.
 * **Explanation**: Android emulator location services or indoor GPS tracking can be imprecise.
-* **Fix**: Look at the accuracy tag displayed next to the captured button (e.g., `±15m`). For precision, type coordinates manually if needed.
+* **Fix**: Wait for the accuracy badge to settle before submitting. If simulating location on an emulator, use the emulator control panel to send coordinates.

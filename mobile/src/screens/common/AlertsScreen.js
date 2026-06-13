@@ -94,6 +94,26 @@ export default function AlertsScreen() {
     }
   };
 
+  const renderFormattedMessage = (text) => {
+    if (!text) return null;
+    const regex = /(DC-\d{8}-\d{5}|GRP-\d{8}-[A-Za-f0-9]+)/g;
+    const parts = text.split(regex);
+    return (
+      <Text>
+        {parts.map((part, index) => {
+          if (part.match(/^DC-\d{8}-\d{5}$/) || part.match(/^GRP-\d{8}-[A-Za-f0-9]+$/)) {
+            return (
+              <Text key={index} style={{ fontWeight: '800', color: '#1D4ED8' }}>
+                {part}
+              </Text>
+            );
+          }
+          return <Text key={index}>{part}</Text>;
+        })}
+      </Text>
+    );
+  };
+
   const renderAlertItem = ({ item }) => {
     const read = isAlertRead(item);
     const priorityStyle = getSeverityColor(item.priority || 'medium');
@@ -115,7 +135,7 @@ export default function AlertsScreen() {
         </View>
 
         <Text style={[styles.messageText, read ? styles.readMutedText : styles.unreadMutedText]}>
-          {item.message}
+          {renderFormattedMessage(item.message)}
         </Text>
 
         <View style={styles.cardFooter}>

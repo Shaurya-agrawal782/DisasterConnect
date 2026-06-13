@@ -81,10 +81,17 @@ export default function CitizenHomeScreen({ navigation }) {
               )}
             </View>
             <Text style={styles.cardTitle}>Alerts Feed</Text>
-            <Text style={styles.cardDesc}>Safety warnings & alerts</Text>
-          </TouchableOpacity>
+            <Text style={styles.cardDesc}>Safety warnings & alert          </TouchableOpacity>
         </View>
 
+        {/* Track a Ticket Button */}
+        <TouchableOpacity
+          style={styles.trackTicketBtn}
+          onPress={() => navigation.navigate('TrackReport')}
+        >
+          <Text style={styles.trackTicketBtnText}>🔍 Track a Ticket by Number</Text>
+        </TouchableOpacity>
+ 
         {/* Logout Button */}
         <TouchableOpacity style={styles.logoutBtn} onPress={logout}>
           <Text style={styles.logoutBtnText}>Sign Out</Text>
@@ -187,7 +194,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 16,
-    marginBottom: 32,
+    marginBottom: 20,
   },
   card: {
     backgroundColor: '#FFFFFF',
@@ -236,6 +243,25 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#64748B',
     lineHeight: 16,
+  },
+  trackTicketBtn: {
+    backgroundColor: '#FFFFFF',
+    borderColor: '#E2E8F0',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginBottom: 20,
+    shadowColor: '#0F172A',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  trackTicketBtnText: {
+    color: '#0F172A',
+    fontSize: 15,
+    fontWeight: '700',
   },
   logoutBtn: {
     borderColor: '#64748B',

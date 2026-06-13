@@ -6,11 +6,15 @@ This is the Expo React Native mobile client for **DisasterConnect**, designed to
 > **Demo Walkthrough Guide**: Check out the comprehensive [DEMO_MOBILE.md](file:///d:/projects/lnct%20hack/mobile/DEMO_MOBILE.md) for step-by-step reporting, dispatch management, alert checking instructions, demo credentials, and mobile troubleshooting.
 
 
-## Current Scope (Phase 5)
+## Current Scope (Parity Release)
 - **Expo React Native Foundation**: Bootstrapped with JavaScript and React Navigation.
 - **Backend Authentication Integration**: Implemented JWT Bearer token authorization using the existing backend endpoints.
 - **Secure Session Persistence**: Local token storage using `@react-native-async-storage/async-storage`.
 - **Role-Based Routing**: Auto-routes to dedicated layouts based on credentials (`citizen`, `responder`, `admin`).
+- **AI Report Assistant**: Translates natural language drafts (English/Hinglish/Hindi) to structured incident metadata (title, category, severity, description recommendations) without altering GPS constraints.
+- **Ticket Tracking**: Allows unauthenticated public status tracking by unique ticket number (e.g. `DC-YYYYMMDD-XXXXX`) without leaking reporter identity or precise GPS coordinates.
+- **Smart Incident Grouping display**: Groups similar nearby reports within a 3-hour window. Displays group status, linked count warnings, location summaries, and cascaded resolution details.
+- **Responder safety profile display**: Read-only profile parameters managed by command admins (department, shift, specialization, badge ID, emergency contacts).
 - **GPS Incident Reporting**: Captures coordinates using `expo-location`, supports Nominatim reverse geocoding for automated address filling, and integrates manual fallback overrides.
 - **Incident List & Detail Tracking**: Citizens can list their reported incidents (with RefreshControl) and view read-only detail dashboards mapping coordinates, assigned responders, dispatched resource units, and chronological status timelines.
 - **Field Responder Incident Updates**: Responders can list assigned dispatches and perform field status updates (e.g. to `in-progress` or `resolved` with custom notes) adhering to backend status transition logic.

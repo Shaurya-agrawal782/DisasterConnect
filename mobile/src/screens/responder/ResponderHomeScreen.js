@@ -82,6 +82,21 @@ export default function ResponderHomeScreen({ navigation }) {
               Read real-time disaster alerts, area warnings, and admin updates.
             </Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.menuCard}
+            onPress={() => navigation.navigate('ResponderProfile')}
+          >
+            <View style={styles.cardHeader}>
+              <View style={styles.cardHeaderLeft}>
+                <Text style={styles.cardIcon}>👤</Text>
+                <Text style={styles.cardTitle}>My Responder Profile</Text>
+              </View>
+            </View>
+            <Text style={styles.cardDesc}>
+              View your shift parameters, badges, zone limits, and safety verification details.
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Sign Out Button */}

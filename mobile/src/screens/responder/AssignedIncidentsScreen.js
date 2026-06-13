@@ -75,10 +75,19 @@ export default function AssignedIncidentsScreen({ navigation }) {
 
         <View style={styles.cardMetaRow}>
           <Text style={styles.typeText}>{getIncidentTypeLabel(item.type)}</Text>
-          <View style={[styles.statusBadge, { backgroundColor: statusStyle.bg, borderColor: statusStyle.border }]}>
-            <Text style={[styles.statusBadgeText, { color: statusStyle.text }]}>
-              {item.status?.toUpperCase()}
-            </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+            {item.incidentGroup ? (
+              <View style={[styles.statusBadge, { backgroundColor: '#EFF6FF', borderColor: '#3B82F6' }]}>
+                <Text style={[styles.statusBadgeText, { color: '#1E40AF' }]}>
+                  📁 GROUPED
+                </Text>
+              </View>
+            ) : null}
+            <View style={[styles.statusBadge, { backgroundColor: statusStyle.bg, borderColor: statusStyle.border }]}>
+              <Text style={[styles.statusBadgeText, { color: statusStyle.text }]}>
+                {item.status?.toUpperCase()}
+              </Text>
+            </View>
           </View>
         </View>
 
